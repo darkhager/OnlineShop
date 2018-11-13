@@ -447,12 +447,14 @@ public class AccountJpaController implements Serializable {
         }
     }
     
-    public Account findAccountByUserName(String userName) {
+    public Account findAccountByUserName(String username) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Account.findByUsername");
-        query.setParameter("userName", userName);
+        query.setParameter("username", username);
         try {
             return (Account) query.getSingleResult();
+        } catch(Exception e) {
+            return null;
         } finally {
             em.close();
         }
@@ -464,17 +466,21 @@ public class AccountJpaController implements Serializable {
         query.setParameter("email", email);
         try {
             return (Account) query.getSingleResult();
+        } catch(Exception e) {
+            return null;
         } finally {
             em.close();
         }
     }
     
-    public Account findAccountByPhoneNumber(String phoneNumber) {
+    public Account findAccountByPhoneNumber(String phonenumber) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Account.findByPhonenumber");
-        query.setParameter("phoneNumber", phoneNumber);
+        query.setParameter("phonenumber", phonenumber);
         try {
             return (Account) query.getSingleResult();
+        } catch(Exception e) {
+            return null;
         } finally {
             em.close();
         }
