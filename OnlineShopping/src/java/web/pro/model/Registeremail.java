@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Registeremail.findAll", query = "SELECT r FROM Registeremail r")
     , @NamedQuery(name = "Registeremail.findByRegisterid", query = "SELECT r FROM Registeremail r WHERE r.registerid = :registerid")
-    , @NamedQuery(name = "Registeremail.findByRegistercode", query = "SELECT r FROM Registeremail r WHERE r.registercode = :registercode")})
+    , @NamedQuery(name = "Registeremail.findByRegistercode", query = "SELECT r FROM Registeremail r WHERE r.registercode = :registercode")
+    , @NamedQuery(name = "Registeremail.findByAccountId", query = "SELECT r FROM Registeremail r WHERE r.accountid = :accountid")})
 public class Registeremail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -109,5 +110,5 @@ public class Registeremail implements Serializable {
     public String toString() {
         return "web.pro.model.Registeremail[ registerid=" + registerid + " ]";
     }
-    
+
 }

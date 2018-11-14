@@ -8,6 +8,7 @@ package web.pro.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -17,9 +18,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
+import web.pro.model.Registeremail;
 import web.pro.model.controller.AccountJpaController;
+import web.pro.model.controller.RegisteremailJpaController;
 
 /**
  *
@@ -124,6 +128,14 @@ public class RegisterServlet extends HttpServlet {
             account.setPostcode(Integer.valueOf(postCode));
             account.setPhonenumber(phoneNumber);
             ajc.create(account);
+            RegisteremailJpaController rejc = new RegisteremailJpaController(utx, emf);
+            Registeremail reg = new Registeremail();
+            reg.setAccountid(account);
+            Account acc = ajc.findAccountByUserName(account.getUsername());
+            reg.setRegistercode(UUID.randomUUID().toString().replace("-","").substring(0,15));
+            rejc.create(reg);
+            HttpSession session = request.getSession(false);
+            session.setAttribute("account", acc);
             getServletContext().getRequestDispatcher("/AccountActivate.jsp").forward(request, response);
         }
     }
