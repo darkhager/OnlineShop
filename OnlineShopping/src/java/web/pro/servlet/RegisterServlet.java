@@ -8,6 +8,8 @@ package web.pro.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -41,9 +43,10 @@ public class RegisterServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
+        String repassword = request.getParameter("repassword");
         String email = request.getParameter("email");
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
@@ -51,33 +54,78 @@ public class RegisterServlet extends HttpServlet {
         String postCode = request.getParameter("postcode");
         String phoneNumber = request.getParameter("phonenumber");
         AccountJpaController ajc = new AccountJpaController(utx, emf);
-        Account account1 = ajc.findAccountByUserName(userName);
-        Account account2 = ajc.findAccountByPhoneNumber(phoneNumber);
-        Account account3 = ajc.findAccountByEmail(email);
-        if (account1 != null) {
-            request.setAttribute("message1", "This username has been use.");
-            if (account2 != null) {
-                request.setAttribute("message2", "This phoneNumber has been use.");
-                if (account3 != null) {
-                    request.setAttribute("message3", "This email has been use.");
-
+        Account accountUserName = ajc.findAccountByUserName(userName);
+        Account accountPhoneNumber = ajc.findAccountByPhoneNumber(phoneNumber);
+        Account accountEmail = ajc.findAccountByEmail(email);
+        if (accountUserName != null) {
+            request.setAttribute("messageusername", "This username has been use.");
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("address", address);
+            request.setAttribute("postCode", postCode);
+            if (accountPhoneNumber != null) {
+                request.setAttribute("messagephonenumber", "This phoneNumber has been use.");
+                if (accountEmail != null) {
+                    request.setAttribute("messageemail", "This email has been use.");
+                } else {
+                    request.setAttribute("email", email);
                 }
+            } else {
+                request.setAttribute("phoneNumber", phoneNumber);
+            }
+            if (password != repassword) {
+                request.setAttribute("messagepassword", "Password in two field are not match.");
             }
             getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
         }
-        if (account2 != null) {
-            request.setAttribute("message2", "This phoneNumber has been use.");
-            if (account3 != null) {
-                request.setAttribute("message3", "This email has been use.");
-
+        if (accountPhoneNumber != null) {
+            request.setAttribute("messagephonenumber", "This phoneNumber has been use.");
+            request.setAttribute("username", userName);
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("address", address);
+            request.setAttribute("postCode", postCode);
+            if (accountEmail != null) {
+                request.setAttribute("messageemail", "This email has been use.");
+            } else {
+                request.setAttribute("email", email);
+            }
+            if (password != repassword) {
+                request.setAttribute("messagepassword", "Password in two field are not match.");
             }
             getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
         }
-        if (account3 != null) {
-            request.setAttribute("message3", "This email has been use.");
+        if (accountEmail != null) {
+            request.setAttribute("messageemail", "This email has been use.");
+            request.setAttribute("username", userName);
+            request.setAttribute("phoneNumber", phoneNumber);
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("address", address);
+            request.setAttribute("postCode", postCode);
+            if (password != repassword) {
+                request.setAttribute("messagepassword", "Password in two field are not match.");
+            }
             getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
         }
-
+        if (password != repassword) {
+            request.setAttribute("messagepassword", "Password in two field are not match.");
+            getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
+        }
+        if (password == repassword && accountEmail == null && accountPhoneNumber == null && accountUserName == null) {
+            request.setAttribute("messageRegister", "Register Success!!!\nPlease Confirm In your Email address");
+            Account account = new Account();
+            account.setUsername(userName);
+            account.setPassword(password);
+            account.setEmail(email);
+            account.setFirstname(firstName);
+            account.setLastname(lastName);
+            account.setAddress(address);
+            account.setPostcode(Integer.valueOf(postCode));
+            account.setPhonenumber(phoneNumber);
+            ajc.create(account);
+            getServletContext().getRequestDispatcher("/AccountActivate.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -92,7 +140,11 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
