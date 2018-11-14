@@ -66,8 +66,7 @@ public class LoginServlet extends HttpServlet {
             if (account1 != null) {
                 if (account1.getPassword().equals(password)) {
                     HttpSession session = request.getSession(false);
-                    session.setAttribute("user", account1);
-                    session.setAttribute("name", account1.getFirstname());
+                    session.setAttribute("account", account1);
                     getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
                     return;
                 }
@@ -75,8 +74,7 @@ public class LoginServlet extends HttpServlet {
             if (account2 != null) {
                 if (account2.getPassword().equals(password)) {
                     HttpSession session = request.getSession(false);
-                    session.setAttribute("user", account2);
-                    session.setAttribute("name", account2.getFirstname());
+                    session.setAttribute("account", account2);
                     getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
                     return;
                 }
@@ -84,8 +82,7 @@ public class LoginServlet extends HttpServlet {
             if (account3 != null) {
                 if (account3.getPassword().equals(password)) {
                     HttpSession session = request.getSession(false);
-                    session.setAttribute("user", account3);
-                    session.setAttribute("name", account3.getFirstname());
+                    session.setAttribute("account", account3);
                     getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
                     return;
                 }

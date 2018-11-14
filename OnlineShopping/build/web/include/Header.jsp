@@ -32,21 +32,20 @@
                     <a class="nav-link" href="#">Contact</a>
                 </li>
             </ul>
-
             <c:choose>
-                <c:when test="${sessionScope.user != null}">
+                <c:when test="${sessionScope.account != null}">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown active">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                                aria-haspopup="false" aria-expanded="false">
-                                AAA's Account
+                                ${sessionScope.account.username}'s Account
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#">My Account</a>
                                 <a class="dropdown-item" href="#">Favorite</a>
                                 <a class="dropdown-item" href="#">History</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="LogoutServlet">Log Out</a>
+                                <a class="dropdown-item" href="Logout">Log Out</a>
                             </div>
                         </li>
                     </ul>
