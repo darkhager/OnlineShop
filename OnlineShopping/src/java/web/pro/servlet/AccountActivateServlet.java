@@ -7,16 +7,29 @@ package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
+import web.pro.model.Account;
+import web.pro.model.controller.RegisteremailJpaController;
 
 /**
  *
  * @author 60130
  */
 public class AccountActivateServlet extends HttpServlet {
+    
+    @Resource
+    UserTransaction utx;
+
+    @PersistenceUnit(unitName = "MyFirstWebAppPU")
+    EntityManagerFactory emf;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,7 +42,14 @@ public class AccountActivateServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String ActivateCode = request.getParameter("activatecode");
+        String activateCode = request.getParameter("activatecode");
+        HttpSession session = request.getSession(false);
+        Account account = (Account) session.getAttribute("account");
+        RegisteremailJpaController rejc = new RegisteremailJpaController(utx, emf);
+        Registeremail reg = rejc.findRegisteremail(Integer.SIZE);
+        if(session.getAttribute("account")!=null){
+            
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
