@@ -8,16 +8,28 @@ package web.pro.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.UserTransaction;
+import web.pro.model.Account;
+import web.pro.model.controller.AccountJpaController;
 
 /**
  *
  * @author 60130
  */
 public class RegisterServlet extends HttpServlet {
+
+    @Resource
+    UserTransaction utx;
+
+    @PersistenceUnit(unitName = "MyFirstWebAppPU")
+    EntityManagerFactory emf;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,6 +50,34 @@ public class RegisterServlet extends HttpServlet {
         String address = request.getParameter("address");
         String postCode = request.getParameter("postcode");
         String phoneNumber = request.getParameter("phonenumber");
+        AccountJpaController ajc = new AccountJpaController(utx, emf);
+        Account account1 = ajc.findAccountByUserName(userName);
+        Account account2 = ajc.findAccountByPhoneNumber(phoneNumber);
+        Account account3 = ajc.findAccountByEmail(email);
+        if (account1 != null) {
+            request.setAttribute("message1", "This username has been use.");
+            if (account2 != null) {
+                request.setAttribute("message2", "This phoneNumber has been use.");
+                if (account3 != null) {
+                    request.setAttribute("message3", "This email has been use.");
+
+                }
+            }
+            getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
+        }
+        if (account2 != null) {
+            request.setAttribute("message2", "This phoneNumber has been use.");
+            if (account3 != null) {
+                request.setAttribute("message3", "This email has been use.");
+
+            }
+            getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
+        }
+        if (account3 != null) {
+            request.setAttribute("message3", "This email has been use.");
+            getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
