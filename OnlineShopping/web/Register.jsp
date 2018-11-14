@@ -9,22 +9,77 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Sign in Page</title>
+
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/shop-homepage.css" rel="stylesheet">
     </head>
     <body>
-        <h1>Register</h1>
-        <form method="post" action="register">
-            <div>FirstName : <input type="text" name="firstName" required></div>
-            <div>LastName : <input type="text" name="lastName" required></div>
-            <div>UserName : <input type="text" name="userName" required></div>
-            <div>Password : <input type="text" name="password" required></div>
-            <div>RePassword : <input type="text" name="repassword" required></div>
-            <div>Email : <input type="email" name="email" required></div>
-            <div>Date Of Birth : <input type="text" name="repassword" required></div>
-            <div>Address : <input type="text" name="address" required></div>
-            <div>Country : <input type="text" name="country" required></div>
-            <div>Address : <input type="number" name="postcode" required></div>
-            <input type="submit">
-        </form>
+        <jsp:include page="include/Header.jsp"/>
+
+        <div class="container">
+            <div class="col-lg-7 my-lg-5 mx-auto border border-dark rounded">
+                <div class="mx-4">
+                    <h1 class="products">Sign in</h1>
+                    <form class="mb-5" id="registerform">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" class="form-control" name="username"
+                                   placeholder="A-Z, a-z, 0-9 only and less than 15 characters.">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="email"
+                                   placeholder="Email">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Password</label>
+                                <input type="password" class="form-control" name="password"
+                                       placeholder="Password">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Confirm Password</label>
+                                <input type="password" class="form-control" name="repassword"
+                                       placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" name="firstname"
+                                       placeholder="First Name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" name="lastname"
+                                       placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea class="form-control" form="registerform" name="address"
+                                      placeholder="Address"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Post Code</label>
+                                <input type="text" class="form-control" name="postcode"
+                                       placeholder="Post Code">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Phone Number</label>
+                                <input type="text" class="form-control" name="phonenumber"
+                                       placeholder="Phone Number">
+                            </div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-secondary">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
