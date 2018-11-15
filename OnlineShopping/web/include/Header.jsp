@@ -20,10 +20,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="ProductPage">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Products</a>
+                    <a class="nav-link" href="ProductPage">Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -36,8 +36,7 @@
                 <c:when test="${sessionScope.account != null}">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown active">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                               aria-haspopup="false" aria-expanded="false">
+                            <a class="nav-link" href="#" id="navbarDropdown" role="button">
                                 ${sessionScope.account.username}'s Account
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -62,7 +61,7 @@
                 <form class="form-inline">
                     <button class="btn btn-light btn-lg" type="button">
                         <img src="images/shopping-cart.png" width="30" height="30" class="d-inline-block" alt="">
-                        <span class="badge badge-pill badge-danger">1</span>
+                        <%--<span class="badge badge-pill badge-danger">1</span>--%>
                     </button>
                 </form>
             </ul>
