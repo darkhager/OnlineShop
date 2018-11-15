@@ -16,6 +16,14 @@
         <servlet-name>AccountActivateServlet</servlet-name>
         <servlet-class>web.pro.servlet.AccountActivateServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductPageServlet</servlet-name>
+        <servlet-class>web.pro.servlet.ProductPageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductDetailServlet</servlet-name>
+        <servlet-class>web.pro.servlet.ProductDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -32,12 +40,20 @@
         <servlet-name>AccountActivateServlet</servlet-name>
         <url-pattern>/AccountActivate</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductPageServlet</servlet-name>
+        <url-pattern>/ProductPage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDetailServlet</servlet-name>
+        <url-pattern>/ProductDetail</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>ShopPage.jsp</welcome-file>
+        <welcome-file>Login.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

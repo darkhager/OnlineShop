@@ -7,25 +7,40 @@ package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
+import web.pro.model.Product;
+import web.pro.model.controller.ProductJpaController;
 
 /**
  *
  * @author lara_
  */
-public class LogoutServlet extends HttpServlet {
+public class ProductDetailServlet extends HttpServlet {
 
+    @PersistenceUnit(unitName = "OnlineShoppingPU")
+    EntityManagerFactory emf;
+    @Resource
+    UserTransaction utx;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if(session != null){
-            session.invalidate();
+        String productid = request.getParameter("productid");
+        if(productid != null){
+            ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
+            int productint = Integer.valueOf(productid);
+            Product product = productJpaCtrl.findProduct(productint);
+            request.setAttribute("product", product);
+            getServletContext().getRequestDispatcher("/ProductDetail.jsp").forward(request, response);
+            return;
         }
-        getServletContext().getRequestDispatcher("/ProductPage").forward(request, response);
+        getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
