@@ -31,11 +31,11 @@ import web.pro.model.controller.RegisteremailJpaController;
  */
 public class RegisterServlet extends HttpServlet {
 
+    @PersistenceUnit(unitName = "OnlineShoppingPU")
+    EntityManagerFactory emf;
+    
     @Resource
     UserTransaction utx;
-
-    @PersistenceUnit(unitName = "MyFirstWebAppPU")
-    EntityManagerFactory emf;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -132,7 +132,7 @@ public class RegisterServlet extends HttpServlet {
             Registeremail reg = new Registeremail();
             reg.setAccountid(account);
             Account acc = ajc.findAccountByUserName(account.getUsername());
-            reg.setRegistercode(UUID.randomUUID().toString().replace("-","").substring(0,15));
+            reg.setRegistercode(UUID.randomUUID().toString().replace("-", "").substring(0, 15));
             rejc.create(reg);
             HttpSession session = request.getSession(false);
             session.setAttribute("account", acc);
