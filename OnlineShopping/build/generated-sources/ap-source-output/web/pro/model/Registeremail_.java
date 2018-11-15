@@ -5,7 +5,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import web.pro.model.Account;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-13T21:52:50")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-15T16:08:44")
 @StaticMetamodel(Registeremail.class)
 public class Registeremail_ { 
 

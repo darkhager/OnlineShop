@@ -1,6 +1,5 @@
 package web.pro.model;
 
-import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
@@ -12,7 +11,7 @@ import web.pro.model.Passwordreset;
 import web.pro.model.Registeremail;
 import web.pro.model.Review;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-13T21:52:50")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-15T16:08:44")
 @StaticMetamodel(Account.class)
 public class Account_ { 
 
@@ -28,7 +27,6 @@ public class Account_ {
     public static volatile SingularAttribute<Account, Integer> accountid;
     public static volatile SingularAttribute<Account, String> password;
     public static volatile ListAttribute<Account, Favorite> favoriteList;
-    public static volatile SingularAttribute<Account, Date> dob;
     public static volatile SingularAttribute<Account, String> email;
     public static volatile ListAttribute<Account, Cart> cartList;
     public static volatile SingularAttribute<Account, String> username;

@@ -30,16 +30,16 @@ import web.pro.model.controller.RegisteremailJpaController;
  * @author 60130
  */
 public class RegisterServlet extends HttpServlet {
-    
+
     @PersistenceUnit(unitName = "OnlineShoppingPU")
     EntityManagerFactory emf;
-    
+
     @Resource
     UserTransaction utx;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
-        String userName = request.getParameter("username");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
         String repassword = request.getParameter("repassword");
         String email = request.getParameter("email");
@@ -48,13 +48,43 @@ public class RegisterServlet extends HttpServlet {
         String address = request.getParameter("address");
         String postCode = request.getParameter("postcode");
         String phoneNumber = request.getParameter("phonenumber");
-        
+
         AccountJpaController ajc = new AccountJpaController(utx, emf);
-        Account accountUserName = ajc.findAccountByUserName(userName);
+
+        Account accountUserName = ajc.findAccountByUserName(username);
         Account accountPhoneNumber = ajc.findAccountByPhoneNumber(phoneNumber);
         Account accountEmail = ajc.findAccountByEmail(email);
-        
-        if (accountUserName != null) {
+
+        if (username != null) {
+            /*Account checkaccount = ajc.findAccountByUserName(username);
+            if (username == checkaccount.getUsername()) {
+                request.setAttribute("messageusername", "This username has been use.");
+                getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
+                return;
+            }*/
+            Account account = new Account();
+            account.setUsername(username);
+            account.setPassword(password);
+            account.setEmail(email);
+            account.setFirstname(firstName);
+            account.setLastname(lastName);
+            account.setAddress(address);
+            account.setPostcode(Integer.valueOf(postCode));
+            account.setPhonenumber(phoneNumber);
+            ajc.create(account);
+            RegisteremailJpaController rejc = new RegisteremailJpaController(utx, emf);
+            Registeremail reg = new Registeremail();
+            reg.setAccountid(account);
+            Account acc = ajc.findAccountByUserName(account.getUsername());
+            reg.setRegistercode(UUID.randomUUID().toString().replace("-", "").substring(0, 15));
+            rejc.create(reg);
+            HttpSession session = request.getSession(false);
+            session.setAttribute("account", acc);
+            getServletContext().getRequestDispatcher("/AccountActivate.jsp").forward(request, response);
+            return;
+        }
+
+        /*if (accountUserName != null) {
             request.setAttribute("messageusername", "This username has been use.");
             request.setAttribute("firstname", firstName);
             request.setAttribute("lastname", lastName);
@@ -77,7 +107,7 @@ public class RegisterServlet extends HttpServlet {
         }
         if (accountPhoneNumber != null) {
             request.setAttribute("messagephonenumber", "This phoneNumber has been use.");
-            request.setAttribute("username", userName);
+            request.setAttribute("username", username);
             request.setAttribute("firstname", firstName);
             request.setAttribute("lastname", lastName);
             request.setAttribute("address", address);
@@ -94,7 +124,7 @@ public class RegisterServlet extends HttpServlet {
         }
         if (accountEmail != null) {
             request.setAttribute("messageemail", "This email has been use.");
-            request.setAttribute("username", userName);
+            request.setAttribute("username", username);
             request.setAttribute("phoneNumber", phoneNumber);
             request.setAttribute("firstname", firstName);
             request.setAttribute("lastname", lastName);
@@ -112,7 +142,7 @@ public class RegisterServlet extends HttpServlet {
         if (password == repassword && accountEmail == null && accountPhoneNumber == null && accountUserName == null) {
             request.setAttribute("messageRegister", "Register Success!!!\nPlease Confirm In your Email address");
             Account account = new Account();
-            account.setUsername(userName);
+            account.setUsername(username);
             account.setPassword(password);
             account.setEmail(email);
             account.setFirstname(firstName);
@@ -131,7 +161,7 @@ public class RegisterServlet extends HttpServlet {
             session.setAttribute("account", acc);
             getServletContext().getRequestDispatcher("/AccountActivate.jsp").forward(request, response);
             return;
-        }
+        }*/
         getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
     }
 
