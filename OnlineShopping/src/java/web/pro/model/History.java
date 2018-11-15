@@ -6,6 +6,7 @@
 package web.pro.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "History.findAll", query = "SELECT h FROM History h")
     , @NamedQuery(name = "History.findByHistoryid", query = "SELECT h FROM History h WHERE h.historyid = :historyid")
     , @NamedQuery(name = "History.findByAmount", query = "SELECT h FROM History h WHERE h.amount = :amount")
-    , @NamedQuery(name = "History.findByPrice", query = "SELECT h FROM History h WHERE h.price = :price")})
+    , @NamedQuery(name = "History.findByPrice", query = "SELECT h FROM History h WHERE h.price = :price")
+    , @NamedQuery(name = "History.findByDate", query = "SELECT h FROM History h WHERE h.date = :date")})
 public class History implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +52,9 @@ public class History implements Serializable {
     @NotNull
     @Column(name = "PRICE")
     private int price;
+    @Column(name = "DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
     @JoinColumn(name = "ACCOUNTID", referencedColumnName = "ACCOUNTID")
     @ManyToOne
     private Account accountid;
@@ -90,6 +97,14 @@ public class History implements Serializable {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Account getAccountid() {
