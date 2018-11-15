@@ -6,6 +6,7 @@
 package web.pro.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Passwordreset.findAll", query = "SELECT p FROM Passwordreset p")
     , @NamedQuery(name = "Passwordreset.findByResetid", query = "SELECT p FROM Passwordreset p WHERE p.resetid = :resetid")
-    , @NamedQuery(name = "Passwordreset.findByResetcode", query = "SELECT p FROM Passwordreset p WHERE p.resetcode = :resetcode")})
+    , @NamedQuery(name = "Passwordreset.findByResetcode", query = "SELECT p FROM Passwordreset p WHERE p.resetcode = :resetcode")
+    , @NamedQuery(name = "Passwordreset.findByDate", query = "SELECT p FROM Passwordreset p WHERE p.date = :date")})
 public class Passwordreset implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,6 +49,9 @@ public class Passwordreset implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "RESETCODE")
     private String resetcode;
+    @Column(name = "DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
     @JoinColumn(name = "ACCOUNTID", referencedColumnName = "ACCOUNTID")
     @ManyToOne
     private Account accountid;
@@ -75,6 +82,14 @@ public class Passwordreset implements Serializable {
 
     public void setResetcode(String resetcode) {
         this.resetcode = resetcode;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Account getAccountid() {

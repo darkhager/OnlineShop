@@ -6,6 +6,7 @@
 package web.pro.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Registeremail.findAll", query = "SELECT r FROM Registeremail r")
     , @NamedQuery(name = "Registeremail.findByRegisterid", query = "SELECT r FROM Registeremail r WHERE r.registerid = :registerid")
-    , @NamedQuery(name = "Registeremail.findByRegistercode", query = "SELECT r FROM Registeremail r WHERE r.registercode = :registercode")})
+    , @NamedQuery(name = "Registeremail.findByRegistercode", query = "SELECT r FROM Registeremail r WHERE r.registercode = :registercode")
+    , @NamedQuery(name = "Registeremail.findByDate", query = "SELECT r FROM Registeremail r WHERE r.date = :date")})
 public class Registeremail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,6 +49,9 @@ public class Registeremail implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "REGISTERCODE")
     private String registercode;
+    @Column(name = "DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
     @JoinColumn(name = "ACCOUNTID", referencedColumnName = "ACCOUNTID")
     @ManyToOne
     private Account accountid;
@@ -75,6 +82,14 @@ public class Registeremail implements Serializable {
 
     public void setRegistercode(String registercode) {
         this.registercode = registercode;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Account getAccountid() {
