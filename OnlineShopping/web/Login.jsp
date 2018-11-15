@@ -15,7 +15,7 @@
         <h1>Login</h1>
         <form method="post" action="Login">
             <div style="color: red">${message}</div>
-            <div>username:<input type="text" name="userName" required></div>
+            <div>username:<input type="text" name="username" required></div>
             <div>password:<input type="password" name="password" required></div>
             <input type="submit">
         </form>
