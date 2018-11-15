@@ -17,10 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
-<<<<<<< HEAD
-=======
-import web.pro.model.Registeremail;
->>>>>>> parent of 4b0dcc3... [FIX]Project that netbean cant open
 import web.pro.model.controller.RegisteremailJpaController;
 
 /**
