@@ -9,15 +9,42 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Login Page</title>
+
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/shop-homepage.css" rel="stylesheet">
     </head>
     <body>
-        <h1>Login</h1>
-        <form method="post" action="Login">
-            <div style="color: red">${message}</div>
-            <div>username:<input type="text" name="username" required></div>
-            <div>password:<input type="password" name="password" required></div>
-            <input type="submit">
-        </form>
+        <jsp:include page="include/Header.jsp"/>
+
+        <div class="container">
+            <div class="col-lg-7 my-lg-5 mx-auto border border-dark rounded">
+                <div class="mx-4">
+                    <h1 class="products">Log in</h1>
+                    <form class="mb-5" action="Login" method="POST">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" class="form-control" name="username"
+                                   placeholder="Enter your Username, E-mail or Phone Number">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" name="password"
+                                   placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <a href="#">Forgot my password?</a>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-secondary">Submit</button>
+                        </div>
+                        <div>
+                            <small class="float-right"><a href="Register">Don't have an account?</a></small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
