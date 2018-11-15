@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
+import web.pro.model.Registeremail;
 import web.pro.model.controller.RegisteremailJpaController;
 
 /**
