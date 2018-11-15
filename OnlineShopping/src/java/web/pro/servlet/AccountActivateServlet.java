@@ -17,10 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
-<<<<<<< HEAD
-=======
 import web.pro.model.Registeremail;
->>>>>>> parent of 4b0dcc3... [FIX]Project that netbean cant open
 import web.pro.model.controller.RegisteremailJpaController;
 
 /**
@@ -28,12 +25,12 @@ import web.pro.model.controller.RegisteremailJpaController;
  * @author 60130
  */
 public class AccountActivateServlet extends HttpServlet {
+
+    @PersistenceUnit(unitName = "OnlineShoppingPU")
+    EntityManagerFactory emf;
     
     @Resource
     UserTransaction utx;
-
-    @PersistenceUnit(unitName = "MyFirstWebAppPU")
-    EntityManagerFactory emf;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,8 +48,8 @@ public class AccountActivateServlet extends HttpServlet {
         Account account = (Account) session.getAttribute("account");
         RegisteremailJpaController rejc = new RegisteremailJpaController(utx, emf);
         Registeremail reg = rejc.findRegisteremail(Integer.SIZE);
-        if(session.getAttribute("account")!=null){
-            
+        if (session.getAttribute("account") != null) {
+
         }
     }
 

@@ -30,12 +30,12 @@ import web.pro.model.controller.RegisteremailJpaController;
  * @author 60130
  */
 public class RegisterServlet extends HttpServlet {
-
+    
+    @PersistenceUnit(unitName = "OnlineShoppingPU")
+    EntityManagerFactory emf;
+    
     @Resource
     UserTransaction utx;
-
-    @PersistenceUnit(unitName = "MyFirstWebAppPU")
-    EntityManagerFactory emf;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
