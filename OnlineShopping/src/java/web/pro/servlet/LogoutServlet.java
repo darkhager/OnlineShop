@@ -7,33 +7,17 @@ package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.transaction.UserTransaction;
-import web.pro.model.Account;
-<<<<<<< HEAD
-=======
-import web.pro.model.Registeremail;
->>>>>>> parent of 4b0dcc3... [FIX]Project that netbean cant open
-import web.pro.model.controller.RegisteremailJpaController;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
-public class AccountActivateServlet extends HttpServlet {
-    
-    @Resource
-    UserTransaction utx;
-
-    @PersistenceUnit(unitName = "MyFirstWebAppPU")
-    EntityManagerFactory emf;
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,14 +30,12 @@ public class AccountActivateServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String activateCode = request.getParameter("activatecode");
         HttpSession session = request.getSession(false);
-        Account account = (Account) session.getAttribute("account");
-        RegisteremailJpaController rejc = new RegisteremailJpaController(utx, emf);
-        Registeremail reg = rejc.findRegisteremail(Integer.SIZE);
-        if(session.getAttribute("account")!=null){
-            
+        if(session != null){
+            session.invalidate();
         }
+        getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
+        //จะมาแก้หลังสร้าง StoreServlet แล้ว
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
