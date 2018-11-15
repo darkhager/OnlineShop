@@ -2,19 +2,19 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>web.pro.servlet.LoginServlet</servlet-class>
+        <servlet-class>online.shop.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>web.pro.servlet.RegisterServlet</servlet-class>
+        <servlet-class>online.shop.servlet.RegisterServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>web.pro.servlet.LogoutServlet</servlet-class>
+        <servlet-class>online.shop.servlet.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AccountActivateServlet</servlet-name>
-        <servlet-class>web.pro.servlet.AccountActivateServlet</servlet-class>
+        <servlet-class>online.shop.servlet.AccountActivateServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
