@@ -40,7 +40,7 @@
                             <button type="submit" class="btn btn-secondary">Submit</button>
                         </div>
                         <div>
-                            <small class="float-right"><a href="Register">Don't have an account?</a></small>
+                            <small class="float-right"><a href="Register.jsp">Don't have an account?</a></small>
                         </div>
                     </form>
                 </div>

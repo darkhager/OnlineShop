@@ -35,47 +35,47 @@ public class LoginServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(true);
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
-        if (userName != null && password != null
-                && userName.trim().length() > 0 && password.trim().length() > 0) {
-            AccountJpaController ajc = new AccountJpaController(utx, emf);
-            Account account1 = ajc.findAccountByUserName(userName);
-            Account account2 = ajc.findAccountByEmail(userName);
-            Account account3 = ajc.findAccountByPhoneNumber(userName);
-            
-            if(account1 == null){
-                System.out.println("account1 null");
-            }
-            if(account2 == null){
-                System.out.println("account2 null");
-            }
-            if(account3 == null){
-                System.out.println("account3 null");
-            }
-            
-            if (account1 != null) {
-                if (account1.getPassword().equals(password)) {
-                    HttpSession session = request.getSession(false);
-                    session.setAttribute("account", account1);
-                    getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
-                    return;
+        if (session != null) {
+            if (userName != null && password != null
+                    && userName.trim().length() > 0 && password.trim().length() > 0) {
+                AccountJpaController ajc = new AccountJpaController(utx, emf);
+                Account account1 = ajc.findAccountByUserName(userName);
+                Account account2 = ajc.findAccountByEmail(userName);
+                Account account3 = ajc.findAccountByPhoneNumber(userName);
+
+                if (account1 == null) {
+                    System.out.println("account1 null");
                 }
-            } 
-            if (account2 != null) {
-                if (account2.getPassword().equals(password)) {
-                    HttpSession session = request.getSession(false);
-                    session.setAttribute("account", account2);
-                    getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
-                    return;
+                if (account2 == null) {
+                    System.out.println("account2 null");
                 }
-            }
-            if (account3 != null) {
-                if (account3.getPassword().equals(password)) {
-                    HttpSession session = request.getSession(false);
-                    session.setAttribute("account", account3);
-                    getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
-                    return;
+                if (account3 == null) {
+                    System.out.println("account3 null");
+                }
+
+                if (account1 != null) {
+                    if (account1.getPassword().equals(password)) {
+                        session.setAttribute("account", account1);
+                        getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
+                        return;
+                    }
+                }
+                if (account2 != null) {
+                    if (account2.getPassword().equals(password)) {
+                        session.setAttribute("account", account2);
+                        getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
+                        return;
+                    }
+                }
+                if (account3 != null) {
+                    if (account3.getPassword().equals(password)) {
+                        session.setAttribute("account", account3);
+                        getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
+                        return;
+                    }
                 }
             }
             request.setAttribute("message", "Username or password incorrect please try again");

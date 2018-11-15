@@ -22,25 +22,25 @@
             <div class="col-lg-7 my-lg-5 mx-auto border border-dark rounded">
                 <div class="mx-4">
                     <h1 class="products">Sign in</h1>
-                    <form class="mb-5" id="registerform">
+                    <form class="mb-5" id="registerform" action="Register" method="POST">
                         <div class="form-group">
-                            <label>Username</label>
+                            <label>Username</label><span>${messageusername}</span>
                             <input type="text" class="form-control" name="username"
                                    placeholder="A-Z, a-z, 0-9 only and less than 15 characters.">
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
+                            <label>Email</label><span>${messageemail}</span>
                             <input type="email" class="form-control" name="email"
                                    placeholder="Email">
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label>Password</label>
+                                <label>Password</label><span>${messagepassword}</span>
                                 <input type="password" class="form-control" name="password"
                                        placeholder="Password">
                             </div>
                             <div class="form-group col-md-6">
-                                <label>Confirm Password</label>
+                                <label>Confirm Password</label><span>${messageusername}</span>
                                 <input type="password" class="form-control" name="repassword"
                                        placeholder="Confirm Password">
                             </div>
@@ -69,7 +69,7 @@
                                        placeholder="Post Code">
                             </div>
                             <div class="form-group col-md-6">
-                                <label>Phone Number</label>
+                                <label>Phone Number</label><span>${messagephonenumber}</span>
                                 <input type="text" class="form-control" name="phonenumber"
                                        placeholder="Phone Number">
                             </div>
