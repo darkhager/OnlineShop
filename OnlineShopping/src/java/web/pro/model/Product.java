@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
     , @NamedQuery(name = "Product.findByProductid", query = "SELECT p FROM Product p WHERE p.productid = :productid")
     , @NamedQuery(name = "Product.findByProductname", query = "SELECT p FROM Product p WHERE p.productname = :productname")
+    , @NamedQuery(name = "Product.findByProducttype", query = "SELECT p FROM Product p WHERE p.producttype = :producttype")
+    , @NamedQuery(name = "Product.findByBrand", query = "SELECT p FROM Product p WHERE p.brand = :brand")
     , @NamedQuery(name = "Product.findByDetail", query = "SELECT p FROM Product p WHERE p.detail = :detail")
     , @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")
     , @NamedQuery(name = "Product.findByAmount", query = "SELECT p FROM Product p WHERE p.amount = :amount")})
@@ -47,6 +49,16 @@ public class Product implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "PRODUCTNAME")
     private String productname;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "PRODUCTTYPE")
+    private String producttype;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "BRAND")
+    private String brand;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 500)
@@ -76,9 +88,11 @@ public class Product implements Serializable {
         this.productid = productid;
     }
 
-    public Product(Integer productid, String productname, String detail, int price, int amount) {
+    public Product(Integer productid, String productname, String producttype, String brand, String detail, int price, int amount) {
         this.productid = productid;
         this.productname = productname;
+        this.producttype = producttype;
+        this.brand = brand;
         this.detail = detail;
         this.price = price;
         this.amount = amount;
@@ -98,6 +112,22 @@ public class Product implements Serializable {
 
     public void setProductname(String productname) {
         this.productname = productname;
+    }
+
+    public String getProducttype() {
+        return producttype;
+    }
+
+    public void setProducttype(String producttype) {
+        this.producttype = producttype;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getDetail() {

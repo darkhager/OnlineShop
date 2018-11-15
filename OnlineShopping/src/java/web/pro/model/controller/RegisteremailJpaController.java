@@ -174,19 +174,6 @@ public class RegisteremailJpaController implements Serializable {
             em.close();
         }
     }
-    
-    public Account findAccountByAccountId(Account account) {
-        EntityManager em = getEntityManager();
-        Query query = em.createNamedQuery("Registeremail.findByAccountId");
-        query.setParameter("accountid", account.getAccountid());
-        try {
-            return (Account) query.getSingleResult();
-        } catch(Exception e) {
-            return null;
-        } finally {
-            em.close();
-        }
-    }
 
     public int getRegisteremailCount() {
         EntityManager em = getEntityManager();

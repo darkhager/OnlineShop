@@ -6,7 +6,6 @@
 package web.pro.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -18,8 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -42,8 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Account.findByLastname", query = "SELECT a FROM Account a WHERE a.lastname = :lastname")
     , @NamedQuery(name = "Account.findByAddress", query = "SELECT a FROM Account a WHERE a.address = :address")
     , @NamedQuery(name = "Account.findByPostcode", query = "SELECT a FROM Account a WHERE a.postcode = :postcode")
-    , @NamedQuery(name = "Account.findByPhonenumber", query = "SELECT a FROM Account a WHERE a.phonenumber = :phonenumber")
-    , @NamedQuery(name = "Account.findByDob", query = "SELECT a FROM Account a WHERE a.dob = :dob")})
+    , @NamedQuery(name = "Account.findByPhonenumber", query = "SELECT a FROM Account a WHERE a.phonenumber = :phonenumber")})
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -90,9 +86,6 @@ public class Account implements Serializable {
     @Size(min = 1, max = 13)
     @Column(name = "PHONENUMBER")
     private String phonenumber;
-    @Column(name = "DOB")
-    @Temporal(TemporalType.DATE)
-    private Date dob;
     @OneToMany(mappedBy = "accountid")
     private List<Passwordreset> passwordresetList;
     @OneToMany(mappedBy = "accountid")
@@ -194,14 +187,6 @@ public class Account implements Serializable {
 
     public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
-    }
-
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
     }
 
     @XmlTransient
