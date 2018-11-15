@@ -37,15 +37,6 @@ public class RegisterServlet extends HttpServlet {
     @Resource
     UserTransaction utx;
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         String userName = request.getParameter("username");
@@ -57,10 +48,12 @@ public class RegisterServlet extends HttpServlet {
         String address = request.getParameter("address");
         String postCode = request.getParameter("postcode");
         String phoneNumber = request.getParameter("phonenumber");
+        
         AccountJpaController ajc = new AccountJpaController(utx, emf);
         Account accountUserName = ajc.findAccountByUserName(userName);
         Account accountPhoneNumber = ajc.findAccountByPhoneNumber(phoneNumber);
         Account accountEmail = ajc.findAccountByEmail(email);
+        
         if (accountUserName != null) {
             request.setAttribute("messageusername", "This username has been use.");
             request.setAttribute("firstname", firstName);
@@ -137,6 +130,7 @@ public class RegisterServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             session.setAttribute("account", acc);
             getServletContext().getRequestDispatcher("/AccountActivate.jsp").forward(request, response);
+            return;
         }
         getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
     }
