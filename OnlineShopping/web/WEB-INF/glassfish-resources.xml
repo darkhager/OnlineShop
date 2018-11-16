@@ -12,4 +12,5 @@
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:app/onlineShopping" object-type="user" pool-name="derby_net_OnlineShopping_appPool"/>
     <jdbc-resource enabled="true" jndi-name="java:app/OnlineShopping" object-type="user" pool-name="derby_net_OnlineShopping_appPool"/>
+    <jdbc-resource enabled="true" jndi-name="java:app/OnlineShopping" object-type="user" pool-name="derby_net_OnlineShopping_appPool"/>
 </resources>
