@@ -55,7 +55,7 @@ public class RegisterServlet extends HttpServlet {
         Account accountPhoneNumber = ajc.findAccountByPhoneNumber(phoneNumber);
         Account accountEmail = ajc.findAccountByEmail(email);
 
-        if (username != null) {
+        if (username != null && accountEmail == null && accountPhoneNumber == null && accountUserName == null && password.equals(repassword)) {
             /*Account checkaccount = ajc.findAccountByUserName(username);
             if (username == checkaccount.getUsername()) {
                 request.setAttribute("messageusername", "This username has been use.");
@@ -83,85 +83,49 @@ public class RegisterServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/AccountActivate.jsp").forward(request, response);
             return;
         }
-
-//        if (accountUserName != null) {
-//            request.setAttribute("messageusername", "This username has been use.");
-//            request.setAttribute("firstname", firstName);
-//            request.setAttribute("lastname", lastName);
-//            request.setAttribute("address", address);
-//            request.setAttribute("postCode", postCode);
-//            if (accountPhoneNumber != null) {
-//                request.setAttribute("messagephonenumber", "This phoneNumber has been use.");
-//                if (accountEmail != null) {
-//                    request.setAttribute("messageemail", "This email has been use.");
-//                } else {
-//                    request.setAttribute("email", email);
-//                }
-//            } else {
-//                request.setAttribute("phoneNumber", phoneNumber);
-//            }
-//            if (password != repassword) {
-//                request.setAttribute("messagepassword", "Password in two field are not match.");
-//            }
-//            getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
-//        }
-//        if (accountPhoneNumber != null) {
-//            request.setAttribute("messagephonenumber", "This phoneNumber has been use.");
-//            request.setAttribute("username", username);
-//            request.setAttribute("firstname", firstName);
-//            request.setAttribute("lastname", lastName);
-//            request.setAttribute("address", address);
-//            request.setAttribute("postCode", postCode);
-//            if (accountEmail != null) {
-//                request.setAttribute("messageemail", "This email has been use.");
-//            } else {
-//                request.setAttribute("email", email);
-//            }
-//            if (password != repassword) {
-//                request.setAttribute("messagepassword", "Password in two field are not match.");
-//            }
-//            getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
-//        }
-//        if (accountEmail != null) {
-//            request.setAttribute("messageemail", "This email has been use.");
-//            request.setAttribute("username", username);
-//            request.setAttribute("phoneNumber", phoneNumber);
-//            request.setAttribute("firstname", firstName);
-//            request.setAttribute("lastname", lastName);
-//            request.setAttribute("address", address);
-//            request.setAttribute("postCode", postCode);
-//            if (password != repassword) {
-//                request.setAttribute("messagepassword", "Password in two field are not match.");
-//            }
-//            getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
-//        }
-//        if (password.equals(repassword)) {
-//            request.setAttribute("messagepassword", "Password in two field are not match.");
-//            getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
-//        }
-//        if (password == repassword && accountEmail == null && accountPhoneNumber == null && accountUserName == null) {
-//            request.setAttribute("messageRegister", "Register Success!!!\nPlease Confirm In your Email address");
-//            Account account = new Account();
-//            account.setUsername(username);
-//            account.setPassword(password);
-//            account.setEmail(email);
-//            account.setFirstname(firstName);
-//            account.setLastname(lastName);
-//            account.setAddress(address);
-//            account.setPostcode(Integer.valueOf(postCode));
-//            account.setPhonenumber(phoneNumber);
-//            ajc.create(account);
-//            RegisteremailJpaController rejc = new RegisteremailJpaController(utx, emf);
-//            Registeremail reg = new Registeremail();
-//            reg.setAccountid(account);
-//            Account acc = ajc.findAccountByUserName(account.getUsername());
-//            reg.setRegistercode(UUID.randomUUID().toString().replace("-","").substring(0,15));
-//            rejc.create(reg);
-//            HttpSession session = request.getSession(false);
-//            session.setAttribute("account", acc);
-//            getServletContext().getRequestDispatcher("/AccountActivate.jsp").forward(request, response);
-//            return;
-//        }
+        if (password != repassword) {
+            request.setAttribute("messagepassword", "Password in two field are not match.");
+        }
+        if (accountUserName != null) {
+            request.setAttribute("messageusername", "This username has been use.");
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("address", address);
+            request.setAttribute("postCode", postCode);
+            if (accountPhoneNumber != null) {
+                request.setAttribute("messagephonenumber", "This phoneNumber has been use.");
+                if (accountEmail != null) {
+                    request.setAttribute("messageemail", "This email has been use.");
+                } else {
+                    request.setAttribute("email", email);
+                }
+            } else {
+                request.setAttribute("phoneNumber", phoneNumber);
+            }
+            
+        }
+        if (accountPhoneNumber != null) {
+            request.setAttribute("messagephonenumber", "This phoneNumber has been use.");
+            request.setAttribute("username", username);
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("address", address);
+            request.setAttribute("postCode", postCode);
+            if (accountEmail != null) {
+                request.setAttribute("messageemail", "This email has been use.");
+            } else {
+                request.setAttribute("email", email);
+            }
+        }
+        if (accountEmail != null) {
+            request.setAttribute("messageemail", "This email has been use.");
+            request.setAttribute("username", username);
+            request.setAttribute("phoneNumber", phoneNumber);
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("address", address);
+            request.setAttribute("postCode", postCode);
+        }
         getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
     }
 
