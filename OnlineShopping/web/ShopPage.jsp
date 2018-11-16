@@ -31,7 +31,7 @@
                             <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
                         </form>
                     </div>
-                    <div class="row">
+                    <div class="row" id="ProductListing">
                         <c:forEach items="${products}" var="p" varStatus="vs">
                             <div class="col-lg-3 col-md-6 mb-4">
                                 <div class="card h-100">
@@ -48,7 +48,10 @@
                                         <h6>${p.price} Bath</h6>
                                     </div>
                                     <div class="card-footer text-center">
-                                        <a class="btn btn-outline-secondary btn-sm" href="#" role="button">Add to Cart</a>
+                                        <form action="AddToCart" method="POST">
+                                            <input type="hidden" value="${p.productid}" name="productid">
+                                            <input class="btn btn-outline-secondary btn-sm" type="submit" value="Add to Cart">
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -74,5 +77,11 @@
         </div>
 
         <jsp:include page="include/Footer.jsp"/>
+
+        <script>
+            $(document).ready(function () {
+                $('#ProductListing').DataTable();
+            });
+        </script>
     </body>
 </html>

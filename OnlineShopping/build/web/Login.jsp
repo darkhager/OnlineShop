@@ -38,6 +38,7 @@
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-secondary">Submit</button>
+                            <span class="ml-3" style="color: red">${message}</span>
                         </div>
                         <div>
                             <small class="float-right"><a href="Register.jsp">Don't have an account?</a></small>
