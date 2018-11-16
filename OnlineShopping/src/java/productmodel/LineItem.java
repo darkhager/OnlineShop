@@ -9,9 +9,9 @@ import web.pro.model.Product;
 
 public class LineItem {
 
-    Product product;
-    double salePrice;
-    int quantity;
+    private Product product;
+    private double salePrice;
+    private int quantity;
 
     public LineItem() {
     }
