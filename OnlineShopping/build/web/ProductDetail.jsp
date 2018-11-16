@@ -40,8 +40,11 @@
                         <h3 class="mx-4">${product.price} Bath.</h3>
                     </div>
                     <div class="ml-4 my-5">
-                        <a class="btn btn-outline-secondary btn-lg" href="#" role="button">Add to Cart</a>
-                        <span class="ml-4">In stock : ${product.amount}</span>
+                        <form action="AddToCart" method="POST">
+                            <input type="hidden" value="${product.productid}" name="productid">
+                            <input class="btn btn-outline-secondary btn-lg" type="submit" value="Add to Cart">
+                            <span class="ml-4">In stock : ${product.amount}</span>
+                        </form>
                     </div>
                 </div>
             </div>

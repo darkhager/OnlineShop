@@ -61,7 +61,9 @@
                 <form class="form-inline">
                     <button class="btn btn-light btn-lg" type="button">
                         <img src="images/shopping-cart.png" width="30" height="30" class="d-inline-block" alt="">
-                        <%--<span class="badge badge-pill badge-danger">1</span>--%>
+                        <c:if test="${cart!=null}">
+                            <span class="badge badge-pill badge-danger">${cart.totalQuantity}</span>
+                        </c:if>
                     </button>
                 </form>
             </ul>
