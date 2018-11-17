@@ -5,7 +5,9 @@
  */
 package web.pro.model.controller;
 
+import java.beans.Statement;
 import java.io.Serializable;
+import java.sql.ResultSet;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
@@ -351,6 +353,18 @@ public class ProductJpaController implements Serializable {
         }
     }
 
+    public List<Product> findProductSearch(String search) {
+        EntityManager em = getEntityManager();
+        String sql = "SELECT * FROM  customer WHERE Name LIKE '%" + search + "%' ";
+        Statement s = connect.createStatement();
+        ResultSet rec = s.executeQuery(sql);
+        while ((rec != null) && (rec.next())) {
+
+            System.out.print(rec.getString("CustomerID"));
+
+        }
+    }
+
     public int getProductCount() {
         EntityManager em = getEntityManager();
         try {
@@ -363,5 +377,5 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }
