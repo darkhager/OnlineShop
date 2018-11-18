@@ -7,11 +7,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<nav class="navbar navbar-expand-lg navbar-dark bg-gradient fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-gradient fixed-top headerfont">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img src="images/headphones-white.png" width="30" height="30" class="d-inline-block align-top" alt="">
-            Headphone Shop
+            <img src="images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            Hedgehog Headphone
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -58,14 +58,12 @@
                 </c:otherwise>
             </c:choose>
             <ul class="navbar-nav ml-3">
-                <form class="form-inline">
-                    <button class="btn btn-light btn-lg" type="button">
-                        <img src="images/shopping-cart.png" width="30" height="30" class="d-inline-block" alt="">
-                        <c:if test="${cart!=null}">
-                            <span class="badge badge-pill badge-danger">${cart.totalQuantity}</span>
-                        </c:if>
-                    </button>
-                </form>
+                <a class="form-inline btn btn-light btn-lg" href="Cart">
+                    <img src="images/shopping-cart.png" width="30" height="30" class="d-inline-block" alt="">
+                    <c:if test="${sessionScope.numincart != null}">
+                        <span class="badge badge-pill badge-danger">${sessionScope.numincart}</span>
+                    </c:if>
+                </a>
             </ul>
         </div>
     </div>

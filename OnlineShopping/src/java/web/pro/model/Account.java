@@ -8,6 +8,7 @@ package web.pro.model;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
 @Entity
 @Table(name = "ACCOUNT")
@@ -86,17 +87,17 @@ public class Account implements Serializable {
     @Size(min = 1, max = 13)
     @Column(name = "PHONENUMBER")
     private String phonenumber;
-    @OneToMany(mappedBy = "accountid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<Passwordreset> passwordresetList;
-    @OneToMany(mappedBy = "accountid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<Review> reviewList;
-    @OneToMany(mappedBy = "accountid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<Favorite> favoriteList;
-    @OneToMany(mappedBy = "accountid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<Cart> cartList;
-    @OneToMany(mappedBy = "accountid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<History> historyList;
-    @OneToMany(mappedBy = "accountid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<Registeremail> registeremailList;
 
     public Account() {

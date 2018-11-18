@@ -19,16 +19,13 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
 import web.pro.model.Cart;
-import web.pro.model.Product;
 import web.pro.model.controller.AccountJpaController;
-import web.pro.model.controller.CartJpaController;
-import web.pro.model.controller.ProductJpaController;
 
 /**
  *
  * @author lara_
  */
-public class ProductPageServlet extends HttpServlet {
+public class CartServlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "OnlineShoppingPU")
     EntityManagerFactory emf;
@@ -38,27 +35,21 @@ public class ProductPageServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        
-        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-        List<Product> products = productJpaCtrl.findProductEntities();
-        request.setAttribute("products", products);
-
+        AccountJpaController accCtrl = new AccountJpaController(utx, emf);
         if (session != null) {
-            AccountJpaController accCtrl = new AccountJpaController(utx, emf);
-            Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
-            int numincart = 0;
-            CartJpaController cartCtrl = new CartJpaController(utx, emf);
-            for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
-                Cart mycart = cartCtrl.findCart(i + 1);
-                if (mycart != null) {
-                    if (mycart.getAccountid().getAccountid().equals(account.getAccountid())) {
-                        numincart = numincart + mycart.getAmount();
-                    }
-                }
+            Account check = (Account) session.getAttribute("account");
+            if (check == null) {
+                getServletContext().getRequestDispatcher("/Login").forward(request, response);
+                return;
+            } else {
+                Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
+                List<Cart> cart = account.getCartList();
+                session.setAttribute("cart", cart);
+                getServletContext().getRequestDispatcher("/Cart.jsp").forward(request, response);
+                return;
             }
-            session.setAttribute("numincart", numincart);
         }
-        getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/Login").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

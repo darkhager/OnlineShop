@@ -8,6 +8,7 @@ package web.pro.model;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
 @Entity
 @Table(name = "PRODUCT")
@@ -72,13 +73,13 @@ public class Product implements Serializable {
     @NotNull
     @Column(name = "AMOUNT")
     private int amount;
-    @OneToMany(mappedBy = "productid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid")
     private List<Review> reviewList;
-    @OneToMany(mappedBy = "productid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid")
     private List<Favorite> favoriteList;
-    @OneToMany(mappedBy = "productid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid")
     private List<Cart> cartList;
-    @OneToMany(mappedBy = "productid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid")
     private List<History> historyList;
 
     public Product() {

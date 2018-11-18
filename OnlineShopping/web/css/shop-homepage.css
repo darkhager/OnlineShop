@@ -9,6 +9,11 @@ body {
   font-family: 'Varela Round', sans-serif;
 }
 
+.headerfont {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 120%;
+}
+
 .bg-gradient {
   background: #0B486B;
   background: -webkit-linear-gradient(to left, #F56217, #0B486B);

@@ -20,13 +20,14 @@ import web.pro.model.Favorite;
 import web.pro.model.Cart;
 import web.pro.model.History;
 import web.pro.model.Product;
+import web.pro.model.controller.exceptions.IllegalOrphanException;
 import web.pro.model.controller.exceptions.NonexistentEntityException;
 import web.pro.model.controller.exceptions.PreexistingEntityException;
 import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
 public class ProductJpaController implements Serializable {
 
@@ -137,7 +138,7 @@ public class ProductJpaController implements Serializable {
         }
     }
 
-    public void edit(Product product) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Product product) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -151,6 +152,42 @@ public class ProductJpaController implements Serializable {
             List<Cart> cartListNew = product.getCartList();
             List<History> historyListOld = persistentProduct.getHistoryList();
             List<History> historyListNew = product.getHistoryList();
+            List<String> illegalOrphanMessages = null;
+            for (Review reviewListOldReview : reviewListOld) {
+                if (!reviewListNew.contains(reviewListOldReview)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Review " + reviewListOldReview + " since its productid field is not nullable.");
+                }
+            }
+            for (Favorite favoriteListOldFavorite : favoriteListOld) {
+                if (!favoriteListNew.contains(favoriteListOldFavorite)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Favorite " + favoriteListOldFavorite + " since its productid field is not nullable.");
+                }
+            }
+            for (Cart cartListOldCart : cartListOld) {
+                if (!cartListNew.contains(cartListOldCart)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Cart " + cartListOldCart + " since its productid field is not nullable.");
+                }
+            }
+            for (History historyListOldHistory : historyListOld) {
+                if (!historyListNew.contains(historyListOldHistory)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain History " + historyListOldHistory + " since its productid field is not nullable.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             List<Review> attachedReviewListNew = new ArrayList<Review>();
             for (Review reviewListNewReviewToAttach : reviewListNew) {
                 reviewListNewReviewToAttach = em.getReference(reviewListNewReviewToAttach.getClass(), reviewListNewReviewToAttach.getReviewid());
@@ -180,12 +217,6 @@ public class ProductJpaController implements Serializable {
             historyListNew = attachedHistoryListNew;
             product.setHistoryList(historyListNew);
             product = em.merge(product);
-            for (Review reviewListOldReview : reviewListOld) {
-                if (!reviewListNew.contains(reviewListOldReview)) {
-                    reviewListOldReview.setProductid(null);
-                    reviewListOldReview = em.merge(reviewListOldReview);
-                }
-            }
             for (Review reviewListNewReview : reviewListNew) {
                 if (!reviewListOld.contains(reviewListNewReview)) {
                     Product oldProductidOfReviewListNewReview = reviewListNewReview.getProductid();
@@ -195,12 +226,6 @@ public class ProductJpaController implements Serializable {
                         oldProductidOfReviewListNewReview.getReviewList().remove(reviewListNewReview);
                         oldProductidOfReviewListNewReview = em.merge(oldProductidOfReviewListNewReview);
                     }
-                }
-            }
-            for (Favorite favoriteListOldFavorite : favoriteListOld) {
-                if (!favoriteListNew.contains(favoriteListOldFavorite)) {
-                    favoriteListOldFavorite.setProductid(null);
-                    favoriteListOldFavorite = em.merge(favoriteListOldFavorite);
                 }
             }
             for (Favorite favoriteListNewFavorite : favoriteListNew) {
@@ -214,12 +239,6 @@ public class ProductJpaController implements Serializable {
                     }
                 }
             }
-            for (Cart cartListOldCart : cartListOld) {
-                if (!cartListNew.contains(cartListOldCart)) {
-                    cartListOldCart.setProductid(null);
-                    cartListOldCart = em.merge(cartListOldCart);
-                }
-            }
             for (Cart cartListNewCart : cartListNew) {
                 if (!cartListOld.contains(cartListNewCart)) {
                     Product oldProductidOfCartListNewCart = cartListNewCart.getProductid();
@@ -229,12 +248,6 @@ public class ProductJpaController implements Serializable {
                         oldProductidOfCartListNewCart.getCartList().remove(cartListNewCart);
                         oldProductidOfCartListNewCart = em.merge(oldProductidOfCartListNewCart);
                     }
-                }
-            }
-            for (History historyListOldHistory : historyListOld) {
-                if (!historyListNew.contains(historyListOldHistory)) {
-                    historyListOldHistory.setProductid(null);
-                    historyListOldHistory = em.merge(historyListOldHistory);
                 }
             }
             for (History historyListNewHistory : historyListNew) {
@@ -270,7 +283,7 @@ public class ProductJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -282,25 +295,37 @@ public class ProductJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The product with id " + id + " no longer exists.", enfe);
             }
-            List<Review> reviewList = product.getReviewList();
-            for (Review reviewListReview : reviewList) {
-                reviewListReview.setProductid(null);
-                reviewListReview = em.merge(reviewListReview);
+            List<String> illegalOrphanMessages = null;
+            List<Review> reviewListOrphanCheck = product.getReviewList();
+            for (Review reviewListOrphanCheckReview : reviewListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Product (" + product + ") cannot be destroyed since the Review " + reviewListOrphanCheckReview + " in its reviewList field has a non-nullable productid field.");
             }
-            List<Favorite> favoriteList = product.getFavoriteList();
-            for (Favorite favoriteListFavorite : favoriteList) {
-                favoriteListFavorite.setProductid(null);
-                favoriteListFavorite = em.merge(favoriteListFavorite);
+            List<Favorite> favoriteListOrphanCheck = product.getFavoriteList();
+            for (Favorite favoriteListOrphanCheckFavorite : favoriteListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Product (" + product + ") cannot be destroyed since the Favorite " + favoriteListOrphanCheckFavorite + " in its favoriteList field has a non-nullable productid field.");
             }
-            List<Cart> cartList = product.getCartList();
-            for (Cart cartListCart : cartList) {
-                cartListCart.setProductid(null);
-                cartListCart = em.merge(cartListCart);
+            List<Cart> cartListOrphanCheck = product.getCartList();
+            for (Cart cartListOrphanCheckCart : cartListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Product (" + product + ") cannot be destroyed since the Cart " + cartListOrphanCheckCart + " in its cartList field has a non-nullable productid field.");
             }
-            List<History> historyList = product.getHistoryList();
-            for (History historyListHistory : historyList) {
-                historyListHistory.setProductid(null);
-                historyListHistory = em.merge(historyListHistory);
+            List<History> historyListOrphanCheck = product.getHistoryList();
+            for (History historyListOrphanCheckHistory : historyListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Product (" + product + ") cannot be destroyed since the History " + historyListOrphanCheckHistory + " in its historyList field has a non-nullable productid field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             em.remove(product);
             utx.commit();

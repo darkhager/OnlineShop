@@ -10,9 +10,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Shop Homepage</title>
+        <title>Products Page</title>
 
         <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/shop-homepage.css" rel="stylesheet">
     </head>
@@ -35,19 +37,24 @@
                         <c:forEach items="${products}" var="p" varStatus="vs">
                             <div class="col-lg-3 col-md-6 mb-4">
                                 <div class="card h-100">
-                                    <a href="#"><img class="card-img-top" src="product-images/H0_${p.productid}.jpg" width="500"></a>
+                                    <a href="ProductDetail?productid=${p.productid}">
+                                        <img class="card-img-top" src="product-images/H0_${p.productid}.jpg" width="500">
+                                    </a>
                                     <div class="card-body">
                                         <h5 class="card-title">
                                             <a href="ProductDetail?productid=${p.productid}">${p.productname}</a>
                                         </h5>
-                                        <div class="card-text">
-                                            <small>Type : ${p.producttype}</small>
-                                        </div>
+                                    </div>
+                                    <div class="card-text mx-auto mb-2">
+                                        <small>Type : ${p.producttype}</small>
                                     </div>
                                     <div class="card-text mx-auto mb-2">
                                         <h6>${p.price} Bath</h6>
                                     </div>
                                     <div class="card-footer text-center">
+                                        <div class="card-text">
+                                            <small>Type : ${p.producttype}</small>
+                                        </div>
                                         <form action="AddToCart" method="POST">
                                             <input type="hidden" value="${p.productid}" name="productid">
                                             <input class="btn btn-outline-secondary btn-sm" type="submit" value="Add to Cart">

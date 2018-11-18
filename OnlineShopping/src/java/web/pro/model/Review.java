@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
 @Entity
 @Table(name = "REVIEW")
@@ -46,10 +46,10 @@ public class Review implements Serializable {
     @Column(name = "SCORE")
     private Integer score;
     @JoinColumn(name = "ACCOUNTID", referencedColumnName = "ACCOUNTID")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Account accountid;
     @JoinColumn(name = "PRODUCTID", referencedColumnName = "PRODUCTID")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Product productid;
 
     public Review() {

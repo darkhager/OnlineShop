@@ -7,6 +7,10 @@ package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -16,9 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
-import productmodel.ShoppingCart;
+import web.pro.model.Account;
 import web.pro.model.Cart;
 import web.pro.model.Product;
+import web.pro.model.controller.AccountJpaController;
+import web.pro.model.controller.CartJpaController;
 import web.pro.model.controller.ProductJpaController;
 
 /**
@@ -33,20 +39,50 @@ public class AddToCartServlet extends HttpServlet {
     UserTransaction utx;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new ShoppingCart();
-            session.setAttribute("cart", cart);
-        }
+            throws ServletException, IOException, Exception {
+        HttpSession session = request.getSession(false);
         String productid = request.getParameter("productid");
         int productint = Integer.valueOf(productid);
-        ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
-        Product product = productJpaCtrl.findProduct(productint);
-        cart.add(product);
 
-        response.sendRedirect("ProductPage");
+        AccountJpaController accCtrl = new AccountJpaController(utx, emf);
+        Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
+        ProductJpaController proCtrl = new ProductJpaController(utx, emf);
+        Product product = proCtrl.findProduct(productint);
+
+        CartJpaController cartCtrl = new CartJpaController(utx, emf);
+        Cart cart = new Cart();
+        cart.setAccountid(account);
+        cart.setProductid(product);
+        cart.setAmount(1);
+
+        for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
+            Cart mycart = cartCtrl.findCart(i + 1);
+            if (mycart != null) {
+                if (cart.getAccountid().getAccountid().equals(mycart.getAccountid().getAccountid())) {
+                    if (cart.getProductid().getProductid().equals(mycart.getProductid().getProductid())) {
+                        mycart.setAmount(mycart.getAmount() + 1);
+                        cartCtrl.edit(mycart);
+                        break;
+                    }
+                }
+            } else {
+                cartCtrl.create(cart);
+                break;
+            }
+        }
+
+        List<Cart> cartlist = cartCtrl.findCartEntities();
+        List<Cart> cartadd = new ArrayList<>();
+        for (Cart ct : cartlist) {
+            if (ct.getAccountid().getAccountid() == account.getAccountid()) {
+                cartadd.add(ct);
+            }
+        }
+        account.setCartList(cartlist);
+        session.setAttribute("account", account);
+        session.setAttribute("numincart", account.getCartList().size());
+        getServletContext().getRequestDispatcher("/ProductPage").forward(request, response);
+        return;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -61,7 +97,11 @@ public class AddToCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(AddToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -75,7 +115,11 @@ public class AddToCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(AddToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

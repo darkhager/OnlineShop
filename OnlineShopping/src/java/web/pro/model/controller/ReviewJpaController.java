@@ -22,7 +22,7 @@ import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
 public class ReviewJpaController implements Serializable {
 

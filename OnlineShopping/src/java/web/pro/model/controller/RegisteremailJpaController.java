@@ -21,7 +21,7 @@ import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
 public class RegisteremailJpaController implements Serializable {
 

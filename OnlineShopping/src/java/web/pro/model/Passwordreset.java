@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
 @Entity
 @Table(name = "PASSWORDRESET")
@@ -53,7 +53,7 @@ public class Passwordreset implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     @JoinColumn(name = "ACCOUNTID", referencedColumnName = "ACCOUNTID")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Account accountid;
 
     public Passwordreset() {
