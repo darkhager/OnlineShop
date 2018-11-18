@@ -56,6 +56,7 @@
                                             <small>Type : ${p.producttype}</small>
                                         </div>
                                         <form action="AddToCart" method="POST">
+                                            <input type="hidden" value="shoppage" name="from">
                                             <input type="hidden" value="${p.productid}" name="productid">
                                             <input class="btn btn-outline-secondary btn-sm" type="submit" value="Add to Cart">
                                         </form>

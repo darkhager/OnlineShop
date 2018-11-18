@@ -35,14 +35,34 @@
                 </thead>
                 <tbody>
                     <c:forEach items="${cart}" var="ct" varStatus="vs">
-                        <tr>
-                            <th scope="row">${vs.count}</th>
-                            <td><img src="product-images/H0_${ct.productid.productid}.jpg" width="100"></td>
-                            <td>${ct.productid.productname}</td>
-                            <td>${ct.amount}</td>
-                            <td>${ct.productid.price}</td>
-                        </tr>
-                        <c:set var="totalprice" value="${totalprice + ct.productid.price}" />
+                        <c:if test="${ct.amount != 0}">
+                            <tr>
+                                <th scope="row">${vs.count}</th>
+                                <td><img src="product-images/H0_${ct.productid.productid}.jpg" width="100"></td>
+                                <td>${ct.productid.productname}</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <form action="RemoveFromCart" method="POST">
+                                                <input type="hidden" value="cartpage" name="from">
+                                                <input type="hidden" value="${ct.productid.productid}" name="productid">
+                                                <input class="page-link" type="submit" value="-">
+                                            </form>
+                                        </li>
+                                        <li class="page-item disabled"><a class="page-link" href="#">${ct.amount}</a></li>
+                                        <li class="page-item">
+                                            <form action="AddToCart" method="POST">
+                                                <input type="hidden" value="cartpage" name="from">
+                                                <input type="hidden" value="${ct.productid.productid}" name="productid">
+                                                <input class="page-link" type="submit" value="+">
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>${ct.productid.price * ct.amount}</td>
+                            </tr>
+                            <c:set var="totalprice" value="${totalprice + (ct.productid.price * ct.amount)}" />
+                        </c:if>
                     </c:forEach>
                     <tr class="font-weight-bold" style="font-size: 125%">
                         <th scope="row"></th>

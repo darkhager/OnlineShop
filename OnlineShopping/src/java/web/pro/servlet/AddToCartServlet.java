@@ -41,48 +41,58 @@ public class AddToCartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         HttpSession session = request.getSession(false);
+        String from = request.getParameter("from");
         String productid = request.getParameter("productid");
         int productint = Integer.valueOf(productid);
 
-        AccountJpaController accCtrl = new AccountJpaController(utx, emf);
-        Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
-        ProductJpaController proCtrl = new ProductJpaController(utx, emf);
-        Product product = proCtrl.findProduct(productint);
+        if (session != null) {
+            if (session.getAttribute("account") == null) {
+                getServletContext().getRequestDispatcher("/Login").forward(request, response);
+                return;
+            }
+            AccountJpaController accCtrl = new AccountJpaController(utx, emf);
+            Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
+            ProductJpaController proCtrl = new ProductJpaController(utx, emf);
+            Product product = proCtrl.findProduct(productint);
 
-        CartJpaController cartCtrl = new CartJpaController(utx, emf);
-        Cart cart = new Cart();
-        cart.setAccountid(account);
-        cart.setProductid(product);
-        cart.setAmount(1);
+            CartJpaController cartCtrl = new CartJpaController(utx, emf);
+            Cart cart = new Cart();
+            cart.setAccountid(account);
+            cart.setProductid(product);
+            cart.setAmount(1);
 
-        for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
-            Cart mycart = cartCtrl.findCart(i + 1);
-            if (mycart != null) {
-                if (cart.getAccountid().getAccountid().equals(mycart.getAccountid().getAccountid())) {
-                    if (cart.getProductid().getProductid().equals(mycart.getProductid().getProductid())) {
-                        mycart.setAmount(mycart.getAmount() + 1);
-                        cartCtrl.edit(mycart);
-                        break;
+            for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
+                Cart mycart = cartCtrl.findCart(i + 1);
+                if (mycart != null) {
+                    if (cart.getAccountid().getAccountid().equals(mycart.getAccountid().getAccountid())) {
+                        if (cart.getProductid().getProductid().equals(mycart.getProductid().getProductid())) {
+                            mycart.setAmount(mycart.getAmount() + 1);
+                            cartCtrl.edit(mycart);
+                            break;
+                        }
                     }
+                } else {
+                    cartCtrl.create(cart);
+                    break;
                 }
-            } else {
-                cartCtrl.create(cart);
-                break;
             }
+
+            List<Cart> cartlist = cartCtrl.findCartEntities();
+            List<Cart> cartadd = new ArrayList<>();
+            for (Cart ct : cartlist) {
+                if (ct.getAccountid().getAccountid() == account.getAccountid()) {
+                    cartadd.add(ct);
+                }
+            }
+            account.setCartList(cartlist);
+            session.setAttribute("account", account);
         }
 
-        List<Cart> cartlist = cartCtrl.findCartEntities();
-        List<Cart> cartadd = new ArrayList<>();
-        for (Cart ct : cartlist) {
-            if (ct.getAccountid().getAccountid() == account.getAccountid()) {
-                cartadd.add(ct);
-            }
+        if ("cartpage".equals(from)) {
+            getServletContext().getRequestDispatcher("/Cart").forward(request, response);
+        } else {
+            getServletContext().getRequestDispatcher("/ProductPage").forward(request, response);
         }
-        account.setCartList(cartlist);
-        session.setAttribute("account", account);
-        session.setAttribute("numincart", account.getCartList().size());
-        getServletContext().getRequestDispatcher("/ProductPage").forward(request, response);
-        return;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
