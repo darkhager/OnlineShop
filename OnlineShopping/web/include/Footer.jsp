@@ -10,7 +10,7 @@
 
 <footer class="py-3 bg-gradient">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Headphone Shop Website 2018</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Hedgehog Headphone Shop Website 2018</p>
     </div>
 </footer>
 

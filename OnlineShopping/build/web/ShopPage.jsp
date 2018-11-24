@@ -52,9 +52,6 @@
                                         <h6>${p.price} Bath</h6>
                                     </div>
                                     <div class="card-footer text-center">
-                                        <div class="card-text">
-                                            <small>Type : ${p.producttype}</small>
-                                        </div>
                                         <form action="AddToCart" method="POST">
                                             <input type="hidden" value="shoppage" name="from">
                                             <input type="hidden" value="${p.productid}" name="productid">

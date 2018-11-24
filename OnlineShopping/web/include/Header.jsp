@@ -26,10 +26,7 @@
                     <a class="nav-link" href="ProductPage">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" href="AboutUs.jsp">About Us</a>
                 </li>
             </ul>
             <c:choose>
@@ -40,7 +37,7 @@
                                 ${sessionScope.account.username}'s Account
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">My Account</a>
+                                <a class="dropdown-item" href="Account">My Account</a>
                                 <a class="dropdown-item" href="#">Favorite</a>
                                 <a class="dropdown-item" href="#">History</a>
                                 <div class="dropdown-divider"></div>
