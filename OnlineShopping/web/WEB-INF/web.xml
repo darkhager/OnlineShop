@@ -72,22 +72,6 @@
         <servlet-name>AddToCartServlet</servlet-name>
         <url-pattern>/AddToCart</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CartServlet</servlet-name>
-        <url-pattern>/Cart</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RemoveFromCartServlet</servlet-name>
-        <url-pattern>/RemoveFromCart</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AccountServlet</servlet-name>
-        <url-pattern>/Account</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>EditAccountServlet</servlet-name>
-        <url-pattern>/EditAccount</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
