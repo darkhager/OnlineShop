@@ -377,11 +377,6 @@ public class ProductJpaController implements Serializable {
         }
     }
 
-    public List<Product> findProductSearch(String search) {
-       
-        
-    }
-
     public int getProductCount() {
         EntityManager em = getEntityManager();
         try {
