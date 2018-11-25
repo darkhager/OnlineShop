@@ -6,6 +6,8 @@
 package web.pro.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -16,14 +18,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
+import web.pro.model.Cart;
 import web.pro.model.controller.AccountJpaController;
 
 /**
  *
  * @author lara_
  */
-public class AccountServlet extends HttpServlet {
-    
+public class PaymentDetailServlet extends HttpServlet {
+
     @PersistenceUnit(unitName = "OnlineShoppingPU")
     EntityManagerFactory emf;
     @Resource
@@ -32,21 +35,29 @@ public class AccountServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        int numincart = (int) session.getAttribute("numincart");
         if (session != null) {
             Account check = (Account) session.getAttribute("account");
             if (check == null) {
-                getServletContext().getRequestDispatcher("/Logout").forward(request, response);
+                getServletContext().getRequestDispatcher("/Login").forward(request, response);
                 return;
             } else {
+                if (numincart <= 0) {
+                    getServletContext().getRequestDispatcher("/Cart").forward(request, response);
+                    return;
+                }
                 AccountJpaController accCtrl = new AccountJpaController(utx, emf);
                 Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
                 session.setAttribute("account", account);
-                
-                getServletContext().getRequestDispatcher("/Account.jsp").forward(request, response);
+                List<Cart> cart = account.getCartList();
+                session.setAttribute("cart", cart);
+                session.setAttribute("totalprice", request.getParameter("totalprice"));
+
+                getServletContext().getRequestDispatcher("/PaymentDetail.jsp").forward(request, response);
                 return;
             }
         }
-        getServletContext().getRequestDispatcher("/Logout").forward(request, response);
+        getServletContext().getRequestDispatcher("/Login").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

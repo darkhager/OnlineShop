@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.pro.model.controller;
+package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
+import web.pro.model.controller.AccountJpaController;
 
 /**
  *
@@ -53,75 +54,75 @@ public class EditAccountServlet extends HttpServlet {
 
                 AccountJpaController accCtrl = new AccountJpaController(utx, emf);
                 Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
-                if (newusername != null) {
+                if (newusername != null && newusername.length() > 0) {
                     Account checkusername = accCtrl.findAccountByUserName(newusername);
                     if (checkusername != null) {
                         if (checkusername.getUsername().equals(newusername)) {
-                            session.setAttribute("invalidusername", "This username is already used.");
-                            session.setAttribute("savemessage", "");
+                            request.setAttribute("invalidusername", "This username is already used.");
                             getServletContext().getRequestDispatcher("/Account.jsp").forward(request, response);
                             return;
                         }
                     }
                     account.setUsername(newusername);
+                    request.setAttribute("savemessage", "Your changed has been save.");
                 }
-                if (oldpassword != null && newpassword != null && newrepassword != null) {
+                if (oldpassword != null && newpassword != null && newrepassword != null
+                         && oldpassword.length() > 0  && newpassword.length() > 0  && newrepassword.length() > 0) {
                     if (!account.getPassword().equals(oldpassword)
                             || !account.getPassword().equals(oldpassword)
                             || !newpassword.equals(newrepassword)) {
-                        session.setAttribute("invalidpassword", "Password Incorrect.");
-                        session.setAttribute("savemessage", "");
+                        request.setAttribute("invalidpassword", "Password Incorrect.");
                         getServletContext().getRequestDispatcher("/Account.jsp").forward(request, response);
                         return;
                     }
                     if (account.getPassword().equals(oldpassword) && newpassword.equals(newrepassword)) {
                         account.setPassword(newpassword);
+                        request.setAttribute("savemessage", "Your changed has been save.");
                     }
                 }
-                if (newemail != null) {
+                if (newemail != null && newemail.length() > 0) {
                     Account checkemail = accCtrl.findAccountByEmail(newemail);
                     if (checkemail != null) {
                         if (checkemail.getEmail().equals(newemail)) {
-                            session.setAttribute("invalidemail", "This email is already used.");
-                            session.setAttribute("savemessage", "");
+                            request.setAttribute("invalidemail", "This email is already used.");
                             getServletContext().getRequestDispatcher("/Account.jsp").forward(request, response);
                             return;
                         }
                     }
                     account.setEmail(newemail);
+                    request.setAttribute("savemessage", "Your changed has been save.");
                 }
-                if (newfname != null) {
+                if (newfname != null && newfname.length() > 0) {
                     account.setFirstname(newfname);
+                    request.setAttribute("savemessage", "Your changed has been save.");
                 }
-                if (newlname != null) {
+                if (newlname != null && newlname.length() > 0) {
                     account.setLastname(newlname);
+                    request.setAttribute("savemessage", "Your changed has been save.");
                 }
-                if (newaddress != null) {
+                if (newaddress != null && newaddress.length() > 0) {
                     account.setAddress(newaddress);
+                    request.setAttribute("savemessage", "Your changed has been save.");
                 }
-                if (newpostcode != null) {
+                if (newpostcode != null && newpostcode.length() > 0) {
                     int intpostcode = Integer.valueOf(newpostcode);
                     account.setPostcode(intpostcode);
+                    request.setAttribute("savemessage", "Your changed has been save.");
                 }
-                if (newphonenum != null) {
+                if (newphonenum != null && newphonenum.length() > 0) {
                     Account checkphonenum = accCtrl.findAccountByPhoneNumber(newphonenum);
                     if (checkphonenum != null) {
                         if (checkphonenum.getPhonenumber().equals(newphonenum)) {
-                            session.setAttribute("invalidphonenum", "This phone number is already used.");
-                            session.setAttribute("savemessage", "");
+                            request.setAttribute("invalidphonenum", "This phone number is already used.");
                             getServletContext().getRequestDispatcher("/Account.jsp").forward(request, response);
                             return;
                         }
                     }
                     account.setPhonenumber(newphonenum);
+                    request.setAttribute("savemessage", "Your changed has been save.");
                 }
                 accCtrl.edit(account);
                 session.setAttribute("account", account);
-                session.setAttribute("invalidusername", "");
-                session.setAttribute("invalidpassword", "");
-                session.setAttribute("invalidemail", "");
-                session.setAttribute("invalidphonenum", "");
-                session.setAttribute("savemessage", "Your changed has been save.");
                 getServletContext().getRequestDispatcher("/Account.jsp").forward(request, response);
                 return;
             }

@@ -42,7 +42,15 @@
     </servlet>
     <servlet>
         <servlet-name>EditAccountServlet</servlet-name>
-        <servlet-class>web.pro.model.controller.EditAccountServlet</servlet-class>
+        <servlet-class>web.pro.servlet.EditAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PaymentDetailServlet</servlet-name>
+        <servlet-class>web.pro.servlet.PaymentDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PaymentByCreditCardServlet</servlet-name>
+        <servlet-class>web.pro.servlet.PaymentByCreditCardServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -87,6 +95,14 @@
     <servlet-mapping>
         <servlet-name>EditAccountServlet</servlet-name>
         <url-pattern>/EditAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaymentDetailServlet</servlet-name>
+        <url-pattern>/PaymentDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaymentByCreditCardServlet</servlet-name>
+        <url-pattern>/PaymentByCreditCard</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
