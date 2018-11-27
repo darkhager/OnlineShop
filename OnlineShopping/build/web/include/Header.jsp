@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="ProductPage">Home</a>
+                    <a class="nav-link" href="MainPage.jsp">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="ProductPage">Products</a>
@@ -38,8 +38,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="Account">My Account</a>
-                                <a class="dropdown-item" href="#">Favorite</a>
-                                <a class="dropdown-item" href="#">History</a>
+                                <a class="dropdown-item" href="Favorite">Favorite</a>
+                                <a class="dropdown-item" href="History">History</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="Logout">Log Out</a>
                             </div>
