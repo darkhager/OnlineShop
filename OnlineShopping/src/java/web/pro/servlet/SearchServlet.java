@@ -7,16 +7,30 @@ package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.UserTransaction;
+import web.pro.model.Product;
+import web.pro.model.controller.ProductJpaController;
 
 /**
  *
  * @author 60130
  */
 public class SearchServlet extends HttpServlet {
+
+    @PersistenceUnit(unitName = "OnlineShoppingPU")
+    EntityManagerFactory emf;
+
+    @Resource
+    UserTransaction utx;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,18 +43,15 @@ public class SearchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet searchServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet searchServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String search = request.getParameter("search");
+        if (search != null) {
+            ProductJpaController pjc = new ProductJpaController(utx, emf);
+            List<Product> proList = pjc.findProductEntities();
+            List<Product> newList = new ArrayList<>();
+            String index = null;
+            for (Product product : proList) {
+                
+            }
         }
     }
 
