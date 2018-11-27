@@ -52,6 +52,22 @@
         <servlet-name>PaymentByCreditCardServlet</servlet-name>
         <servlet-class>web.pro.servlet.PaymentByCreditCardServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HistoryServlet</servlet-name>
+        <servlet-class>web.pro.servlet.HistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddFavoriteServlet</servlet-name>
+        <servlet-class>web.pro.servlet.AddFavoriteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveFavoriteServlet</servlet-name>
+        <servlet-class>web.pro.servlet.RemoveFavoriteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FavoriteServlet</servlet-name>
+        <servlet-class>web.pro.servlet.FavoriteServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -104,12 +120,28 @@
         <servlet-name>PaymentByCreditCardServlet</servlet-name>
         <url-pattern>/PaymentByCreditCard</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HistoryServlet</servlet-name>
+        <url-pattern>/History</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddFavoriteServlet</servlet-name>
+        <url-pattern>/AddFavorite</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveFavoriteServlet</servlet-name>
+        <url-pattern>/RemoveFavorite</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FavoriteServlet</servlet-name>
+        <url-pattern>/Favorite</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>Login.jsp</welcome-file>
+        <welcome-file>MainPage.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

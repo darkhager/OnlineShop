@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "History.findAll", query = "SELECT h FROM History h")
     , @NamedQuery(name = "History.findByHistoryid", query = "SELECT h FROM History h WHERE h.historyid = :historyid")
+    , @NamedQuery(name = "History.findByOrdernumber", query = "SELECT h FROM History h WHERE h.ordernumber = :ordernumber")
     , @NamedQuery(name = "History.findByAmount", query = "SELECT h FROM History h WHERE h.amount = :amount")
     , @NamedQuery(name = "History.findByPrice", query = "SELECT h FROM History h WHERE h.price = :price")
     , @NamedQuery(name = "History.findByDate", query = "SELECT h FROM History h WHERE h.date = :date")})
@@ -44,6 +45,10 @@ public class History implements Serializable {
     @Basic(optional = false)
     @Column(name = "HISTORYID")
     private Integer historyid;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ORDERNUMBER")
+    private int ordernumber;
     @Basic(optional = false)
     @NotNull
     @Column(name = "AMOUNT")
@@ -69,8 +74,9 @@ public class History implements Serializable {
         this.historyid = historyid;
     }
 
-    public History(Integer historyid, int amount, int price) {
+    public History(Integer historyid, int ordernumber, int amount, int price) {
         this.historyid = historyid;
+        this.ordernumber = ordernumber;
         this.amount = amount;
         this.price = price;
     }
@@ -81,6 +87,14 @@ public class History implements Serializable {
 
     public void setHistoryid(Integer historyid) {
         this.historyid = historyid;
+    }
+
+    public int getOrdernumber() {
+        return ordernumber;
+    }
+
+    public void setOrdernumber(int ordernumber) {
+        this.ordernumber = ordernumber;
     }
 
     public int getAmount() {

@@ -6,7 +6,6 @@
 package web.pro.model.controller;
 
 import java.io.Serializable;
-import java.sql.ResultSet;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
@@ -389,5 +388,5 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-
+    
 }
