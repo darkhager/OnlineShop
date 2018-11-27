@@ -56,14 +56,20 @@ public class RemoveFromCartServlet extends HttpServlet {
         cart.setProductid(product);
         cart.setAmount(1);
 
-        for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
-            Cart mycart = cartCtrl.findCart(i + 1);
+        for (int i = 0; i < cartCtrl.getCartCount() + 1; i++) {
+            Cart mycart = cartCtrl.findCart(i);
             if (mycart != null) {
+                System.out.println("cartid " + mycart.getCartid());
                 if (cart.getAccountid().getAccountid().equals(mycart.getAccountid().getAccountid())) {
                     if (cart.getProductid().getProductid().equals(mycart.getProductid().getProductid())) {
-                        mycart.setAmount(mycart.getAmount() - 1);
-                        cartCtrl.edit(mycart);
-                        break;
+                        if (mycart.getAmount() > 1) {
+                            mycart.setAmount(mycart.getAmount() - 1);
+                            cartCtrl.edit(mycart);
+                            break;
+                        } else {
+                            cartCtrl.destroy(i);
+                            break;
+                        }
                     }
                 }
             }
@@ -79,7 +85,7 @@ public class RemoveFromCartServlet extends HttpServlet {
         account.setCartList(cartlist);
         session.setAttribute("account", account);
 
-        if("cartpage".equals(from)){
+        if ("cartpage".equals(from)) {
             getServletContext().getRequestDispatcher("/Cart").forward(request, response);
         } else {
             getServletContext().getRequestDispatcher("/ProductPage").forward(request, response);

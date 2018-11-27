@@ -57,24 +57,44 @@ public class AddToCartServlet extends HttpServlet {
 
             CartJpaController cartCtrl = new CartJpaController(utx, emf);
             Cart cart = new Cart();
+            cart.setCartid(cartCtrl.getCartCount() + 1);
             cart.setAccountid(account);
             cart.setProductid(product);
             cart.setAmount(1);
 
-            for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
-                Cart mycart = cartCtrl.findCart(i + 1);
+            for (int i = 1; i < cartCtrl.getCartCount(); i++) {
+                Cart check = cartCtrl.findCart(i);
+                if (check == null) {
+                    cart.setCartid(i);
+                    break;
+                }
+            }
+
+            boolean found = false;
+            for (int i = 0; i < cartCtrl.getCartCount() + 1; i++) {
+                Cart mycart = cartCtrl.findCart(i);
                 if (mycart != null) {
                     if (cart.getAccountid().getAccountid().equals(mycart.getAccountid().getAccountid())) {
                         if (cart.getProductid().getProductid().equals(mycart.getProductid().getProductid())) {
-                            mycart.setAmount(mycart.getAmount() + 1);
-                            cartCtrl.edit(mycart);
-                            break;
+                            if (mycart.getAmount() < product.getAmount()) {
+                                mycart.setAmount(mycart.getAmount() + 1);
+                                cartCtrl.edit(mycart);
+                                if (mycart.getAmount() == product.getAmount()) {
+                                    request.setAttribute("disabled", "disabled");
+                                }
+                                found = true;
+                                break;
+                            } else {
+                                request.setAttribute("disabled", "disabled");
+                                found = true;
+                                break;
+                            }
                         }
                     }
-                } else {
-                    cartCtrl.create(cart);
-                    break;
                 }
+            }
+            if (found == false) {
+                cartCtrl.create(cart);
             }
 
             List<Cart> cartlist = cartCtrl.findCartEntities();
@@ -86,10 +106,23 @@ public class AddToCartServlet extends HttpServlet {
             }
             account.setCartList(cartlist);
             session.setAttribute("account", account);
+
+            int numincart = 0;
+            for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
+                Cart mycart = cartCtrl.findCart(i + 1);
+                if (mycart != null) {
+                    if (mycart.getAccountid().getAccountid().equals(account.getAccountid())) {
+                        numincart = numincart + mycart.getAmount();
+                    }
+                }
+            }
+            session.setAttribute("numincart", numincart);
         }
 
         if ("cartpage".equals(from)) {
             getServletContext().getRequestDispatcher("/Cart").forward(request, response);
+        } else if ("detailpage".equals(from)) {
+            getServletContext().getRequestDispatcher("/ProductDetail").forward(request, response);
         } else {
             getServletContext().getRequestDispatcher("/ProductPage").forward(request, response);
         }
