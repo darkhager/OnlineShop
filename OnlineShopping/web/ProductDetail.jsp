@@ -4,6 +4,7 @@
     Author     : 60130
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,7 +14,7 @@
 
         <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
-        
+
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/shop-homepage.css" rel="stylesheet">
     </head>
@@ -27,6 +28,26 @@
                 </div>
                 <div class="col-lg-6 my-lg-5">
                     <h1>${product.productname}</h1>
+                    <div class="ml-4 my-3">
+                        <c:choose>
+                            <c:when test="${isfav == true}">
+                                <form class="form-inline" action="RemoveFavorite" method="POST">
+                                    <input type="hidden" value="detailpage" name="from">
+                                    <input type="hidden" value="${product.productid}" name="productid">
+                                    <input type="image" src="images/star.png" width="40" height="40" alt="Submit">
+                                    <h3 class="ml-2 my-auto" style="color: #F56217">Unfavorite</h3>
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <form class="form-inline" action="AddFavorite" method="POST">
+                                    <input type="hidden" value="detailpage" name="from">
+                                    <input type="hidden" value="${product.productid}" name="productid">
+                                    <input type="image" src="images/star-outline.png" width="40" height="40" alt="Submit">
+                                    <h3 class="ml-2 my-auto" style="color: #F56217">Add Favorite</h3>
+                                </form>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                     <div class="ml-4 my-3">
                         <div>Product Brand : ${product.brand}</div>
                         <div>Product Type : ${product.producttype}</div>
@@ -43,8 +64,9 @@
                     </div>
                     <div class="ml-4 my-5">
                         <form action="AddToCart" method="POST">
+                            <input type="hidden" value="detailpage" name="from">
                             <input type="hidden" value="${product.productid}" name="productid">
-                            <input class="btn btn-outline-secondary btn-lg" type="submit" value="Add to Cart">
+                            <input class="btn btn-outline-secondary btn-lg" type="submit" value="Add to Cart" ${disabled}>
                             <span class="ml-4">In stock : ${product.amount}</span>
                         </form>
                     </div>
