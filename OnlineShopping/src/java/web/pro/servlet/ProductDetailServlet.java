@@ -14,8 +14,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
+import web.pro.model.Account;
+import web.pro.model.Favorite;
 import web.pro.model.Product;
+import web.pro.model.controller.AccountJpaController;
+import web.pro.model.controller.FavoriteJpaController;
 import web.pro.model.controller.ProductJpaController;
 
 /**
@@ -28,15 +33,36 @@ public class ProductDetailServlet extends HttpServlet {
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
         String productid = request.getParameter("productid");
-        if(productid != null){
+        if (productid != null) {
             ProductJpaController productJpaCtrl = new ProductJpaController(utx, emf);
             int productint = Integer.valueOf(productid);
             Product product = productJpaCtrl.findProduct(productint);
             request.setAttribute("product", product);
+
+            AccountJpaController accCtrl = new AccountJpaController(utx, emf);
+            Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
+
+            boolean isfav = false;
+            FavoriteJpaController favCtrl = new FavoriteJpaController(utx, emf);
+            for (int i = 0; i < favCtrl.getFavoriteCount() + 1; i++) {
+                Favorite myfav = favCtrl.findFavorite(i);
+                if (myfav != null) {
+                    if (myfav.getAccountid().getAccountid().equals(account.getAccountid())) {
+                        if (myfav.getProductid().getProductid().equals(product.getProductid())) {
+                            isfav = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            System.out.println(isfav);
+            request.setAttribute("isfav", isfav);
+
             getServletContext().getRequestDispatcher("/ProductDetail.jsp").forward(request, response);
             return;
         }

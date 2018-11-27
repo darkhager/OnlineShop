@@ -49,6 +49,7 @@ public class PaymentDetailServlet extends HttpServlet {
                 AccountJpaController accCtrl = new AccountJpaController(utx, emf);
                 Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
                 session.setAttribute("account", account);
+                
                 List<Cart> cart = account.getCartList();
                 session.setAttribute("cart", cart);
                 session.setAttribute("totalprice", request.getParameter("totalprice"));

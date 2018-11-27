@@ -8,6 +8,7 @@ package web.pro.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +23,11 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
 import web.pro.model.Cart;
+import web.pro.model.History;
 import web.pro.model.Product;
 import web.pro.model.controller.AccountJpaController;
 import web.pro.model.controller.CartJpaController;
+import web.pro.model.controller.HistoryJpaController;
 import web.pro.model.controller.ProductJpaController;
 
 /**
@@ -49,7 +52,9 @@ public class PaymentByCreditCardServlet extends HttpServlet {
             } else {
                 AccountJpaController accCtrl = new AccountJpaController(utx, emf);
                 Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
-                
+                HistoryJpaController hisCtrl = new HistoryJpaController(utx, emf);
+                String order = account.getAccountid() + "00" + hisCtrl.getHistoryCount();
+
                 session.setAttribute("totalpriceall", request.getParameter("totalpriceall"));
 
                 String creditone = request.getParameter("creditone");
@@ -71,26 +76,42 @@ public class PaymentByCreditCardServlet extends HttpServlet {
                             String creditexd = creditexdone + creditexdtwo;
                             if (creditcvc != null && creditcvc.length() == 3
                                     && creditexd != null && creditexd.length() == 4) {
-                                //add history
-                                //clear cart
-
                                 CartJpaController cartCtrl = new CartJpaController(utx, emf);
                                 Cart cart = new Cart();
                                 cart.setAccountid(account);
-                                for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
-                                    Cart mycart = cartCtrl.findCart(i + 1);
+                                int maxcart = cartCtrl.getCartCount() + 1;
+                                for (int i = 0; i < maxcart; i++) {
+                                    Cart mycart = cartCtrl.findCart(i);
                                     if (mycart != null) {
                                         if (cart.getAccountid().getAccountid().equals(mycart.getAccountid().getAccountid())) {
                                             ProductJpaController proCtrl = new ProductJpaController(utx, emf);
                                             Product product = proCtrl.findProduct(mycart.getProductid().getProductid());
                                             product.setAmount(product.getAmount() - mycart.getAmount());
                                             proCtrl.edit(product);
-                                            
-                                            mycart.setAmount(0);
-                                            cartCtrl.edit(mycart);
+
+                                            History history = new History();
+                                            history.setOrdernumber(Integer.valueOf(order));
+                                            history.setAccountid(account);
+                                            history.setProductid(product);
+                                            history.setAmount(mycart.getAmount());
+                                            history.setPrice(mycart.getProductid().getPrice());
+                                            history.setDate(new Date());
+                                            hisCtrl.create(history);
+
+                                            List<History> historylist = hisCtrl.findHistoryEntities();
+                                            List<History> historyadd = new ArrayList<>();
+                                            for (History htr : historylist) {
+                                                if (htr.getAccountid().getAccountid() == account.getAccountid()) {
+                                                    historyadd.add(htr);
+                                                }
+                                            }
+                                            account.setHistoryList(historylist);
+
+                                            cartCtrl.destroy(i);
                                         }
                                     }
                                 }
+
                                 List<Cart> cartlist = cartCtrl.findCartEntities();
                                 List<Cart> cartadd = new ArrayList<>();
                                 for (Cart ct : cartlist) {
@@ -99,6 +120,7 @@ public class PaymentByCreditCardServlet extends HttpServlet {
                                     }
                                 }
                                 account.setCartList(cartlist);
+
                                 session.setAttribute("account", account);
                                 session.setAttribute("numincart", 0);
                                 getServletContext().getRequestDispatcher("/PaymentSuccess.jsp").forward(request, response);
