@@ -49,8 +49,8 @@ public class CartServlet extends HttpServlet {
 
                 int numincart = 0;
                 CartJpaController cartCtrl = new CartJpaController(utx, emf);
-                for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
-                    Cart mycart = cartCtrl.findCart(i + 1);
+                for (int i = 0; i < cartCtrl.getCartCount() * cartCtrl.getCartCount() + 5; i++) {
+                    Cart mycart = cartCtrl.findCart(i);
                     if (mycart != null) {
                         if (mycart.getAccountid().getAccountid().equals(account.getAccountid())) {
                             numincart = numincart + mycart.getAmount();

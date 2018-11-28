@@ -31,13 +31,18 @@
                         <th scope="col">Product Detail</th>
                         <th scope="col">Amount</th>
                         <th scope="col">Price</th>
+                        <th scope="row"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach items="${cart}" var="ct" varStatus="vs">
                         <tr>
                             <td><img src="product-images/H0_${ct.productid.productid}.jpg" width="100"></td>
-                            <td>${ct.productid.productname}</td>
+                            <td>
+                                <a href="ProductDetail?productid=${ct.productid.productid}">
+                                    ${ct.productid.productname}
+                                </a>
+                            </td>
                             <td>
                                 <ul class="pagination">
                                     <li class="page-item">
@@ -66,13 +71,21 @@
                                 <small>In stock : ${ct.productid.amount}</small>
                             </td>
                             <td>฿${ct.productid.price * ct.amount}</td>
+                            <td>
+                                <form action="RemoveFromCart" method="POST">
+                                    <input type="hidden" value="removeall" name="removeall">
+                                    <input type="hidden" value="cartpage" name="from">
+                                    <input type="hidden" value="${ct.productid.productid}" name="productid">
+                                    <input class="btn btn-outline-secondary" type="submit" value="Remove">
+                                </form>
+                            </td>
                         </tr>
                         <c:set var="totalprice" value="${totalprice + (ct.productid.price * ct.amount)}" />
                     </c:forEach>
                     <c:choose>
                         <c:when test="${sessionScope.numincart <= 0}">
                             <tr>
-                                <td colspan="4" class="text-center">Nothing here.</td>
+                                <td colspan="5" class="text-center">Nothing here.</td>
                             </tr>
                         </c:when>
                         <c:otherwise>
@@ -80,7 +93,7 @@
                                 <th scope="row"></th>
                                 <td>Total</td>
                                 <td>${sessionScope.numincart}</td>
-                                <td>฿${totalprice}</td>
+                                <td colspan="2">฿${totalprice}</td>
                             </tr>
                         </c:otherwise>
                     </c:choose>

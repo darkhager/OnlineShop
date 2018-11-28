@@ -108,7 +108,7 @@ public class AddToCartServlet extends HttpServlet {
             session.setAttribute("account", account);
 
             int numincart = 0;
-            for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
+            for (int i = 0; i < cartCtrl.getCartCount() * cartCtrl.getCartCount() + 5; i++) {
                 Cart mycart = cartCtrl.findCart(i + 1);
                 if (mycart != null) {
                     if (mycart.getAccountid().getAccountid().equals(account.getAccountid())) {

@@ -55,13 +55,19 @@ public class RegisterServlet extends HttpServlet {
         Account accountPhoneNumber = ajc.findAccountByPhoneNumber(phoneNumber);
         Account accountEmail = ajc.findAccountByEmail(email);
 
-        if (username != null && accountEmail == null && accountPhoneNumber == null && accountUserName == null && password.equals(repassword)) {
-            /*Account checkaccount = ajc.findAccountByUserName(username);
-            if (username == checkaccount.getUsername()) {
-                request.setAttribute("messageusername", "This username has been use.");
-                getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
-                return;
-            }*/
+        if (username != null && username.length() > 0
+                && password != null && password.length() > 0
+                && repassword != null && repassword.length() > 0
+                && email != null && email.length() > 0
+                && firstName != null && firstName.length() > 0
+                && lastName != null && lastName.length() > 0
+                && address != null && address.length() > 0
+                && postCode != null && postCode.length() > 0
+                && phoneNumber != null && phoneNumber.length() > 0
+                && accountEmail == null
+                && accountPhoneNumber == null
+                && accountUserName == null
+                && password.equals(repassword)) {
             Account account = new Account();
             account.setUsername(username);
             account.setPassword(password);
@@ -72,59 +78,37 @@ public class RegisterServlet extends HttpServlet {
             account.setPostcode(Integer.valueOf(postCode));
             account.setPhonenumber(phoneNumber);
             ajc.create(account);
-            RegisteremailJpaController rejc = new RegisteremailJpaController(utx, emf);
-            Registeremail reg = new Registeremail();
-            reg.setAccountid(account);
-            Account acc = ajc.findAccountByUserName(account.getUsername());
-            reg.setRegistercode(UUID.randomUUID().toString().replace("-", "").substring(0, 15));
-            rejc.create(reg);
-            HttpSession session = request.getSession(false);
-            session.setAttribute("account", acc);
-            getServletContext().getRequestDispatcher("/AccountActivate.jsp").forward(request, response);
+            
+            getServletContext().getRequestDispatcher("/RegisterSuccess.jsp").forward(request, response);
             return;
         }
-        if (password != repassword) {
-            request.setAttribute("messagepassword", "Password in two field are not match.");
+        request.setAttribute("message", "Please input your information.");
+        if (password != null && password.length() > 0
+                && repassword != null && repassword.length() > 0) {
+            if (!password.equals(repassword)) {
+                request.setAttribute("messagepassword", "Password in two field are not match.");
+                request.setAttribute("message", "");
+            }
         }
         if (accountUserName != null) {
             request.setAttribute("messageusername", "This username has been use.");
-            request.setAttribute("firstname", firstName);
-            request.setAttribute("lastname", lastName);
-            request.setAttribute("address", address);
-            request.setAttribute("postCode", postCode);
+            request.setAttribute("message", "");
             if (accountPhoneNumber != null) {
-                request.setAttribute("messagephonenumber", "This phoneNumber has been use.");
+                request.setAttribute("messagephonenumber", "This phone number has been use.");
+                request.setAttribute("message", "");
                 if (accountEmail != null) {
                     request.setAttribute("messageemail", "This email has been use.");
-                } else {
-                    request.setAttribute("email", email);
+                    request.setAttribute("message", "");
                 }
-            } else {
-                request.setAttribute("phoneNumber", phoneNumber);
             }
-            
         }
         if (accountPhoneNumber != null) {
-            request.setAttribute("messagephonenumber", "This phoneNumber has been use.");
-            request.setAttribute("username", username);
-            request.setAttribute("firstname", firstName);
-            request.setAttribute("lastname", lastName);
-            request.setAttribute("address", address);
-            request.setAttribute("postCode", postCode);
-            if (accountEmail != null) {
-                request.setAttribute("messageemail", "This email has been use.");
-            } else {
-                request.setAttribute("email", email);
-            }
+            request.setAttribute("messagephonenumber", "This phone number has been use.");
+            request.setAttribute("message", "");
         }
         if (accountEmail != null) {
             request.setAttribute("messageemail", "This email has been use.");
-            request.setAttribute("username", username);
-            request.setAttribute("phoneNumber", phoneNumber);
-            request.setAttribute("firstname", firstName);
-            request.setAttribute("lastname", lastName);
-            request.setAttribute("address", address);
-            request.setAttribute("postCode", postCode);
+            request.setAttribute("message", "");
         }
         getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
     }

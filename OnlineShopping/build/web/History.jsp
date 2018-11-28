@@ -56,7 +56,11 @@
                                 <tr>
                                     <td>${htr.ordernumber}</td>
                                     <td><img src="product-images/H0_${htr.productid.productid}.jpg" width="100"></td>
-                                    <td>${htr.productid.productname}</td>
+                                    <td>
+                                        <a href="ProductDetail?productid=${htr.productid.productid}">
+                                            ${htr.productid.productname}
+                                        </a>
+                                    </td>
                                     <td>${htr.amount}</td>
                                     <c:set var="orderamount" value="${orderamount + htr.amount}"/>
                                     <td>฿${htr.price}</td>

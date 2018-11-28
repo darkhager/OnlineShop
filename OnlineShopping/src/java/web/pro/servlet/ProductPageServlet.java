@@ -49,7 +49,7 @@ public class ProductPageServlet extends HttpServlet {
                 Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
                 int numincart = 0;
                 CartJpaController cartCtrl = new CartJpaController(utx, emf);
-                for (int i = 0; i < cartCtrl.findCartEntities().size() + 1; i++) {
+                for (int i = 0; i < cartCtrl.getCartCount() * cartCtrl.getCartCount() + 5; i++) {
                     Cart mycart = cartCtrl.findCart(i + 1);
                     if (mycart != null) {
                         if (mycart.getAccountid().getAccountid().equals(account.getAccountid())) {

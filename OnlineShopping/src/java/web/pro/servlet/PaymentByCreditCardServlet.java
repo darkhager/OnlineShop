@@ -65,70 +65,75 @@ public class PaymentByCreditCardServlet extends HttpServlet {
                 String creditexdone = request.getParameter("creditexdone");
                 String creditexdtwo = request.getParameter("creditexdtwo");
 
-                if (creditone != null && creditone.length() > 0
-                        && credittwo != null && credittwo.length() > 0
-                        && creditthree != null && creditthree.length() > 0
-                        && creditfour != null && creditfour.length() > 0) {
-                    String creditnum = creditone + credittwo + creditthree + creditfour;
-                    if (creditnum.length() == 16) {
-                        if (creditexdone != null && creditexdone.length() > 0
-                                && creditexdtwo != null && creditexdtwo.length() > 0) {
-                            String creditexd = creditexdone + creditexdtwo;
-                            if (creditcvc != null && creditcvc.length() == 3
-                                    && creditexd != null && creditexd.length() == 4) {
-                                CartJpaController cartCtrl = new CartJpaController(utx, emf);
-                                Cart cart = new Cart();
-                                cart.setAccountid(account);
-                                int maxcart = cartCtrl.getCartCount() + 1;
-                                for (int i = 0; i < maxcart; i++) {
-                                    Cart mycart = cartCtrl.findCart(i);
-                                    if (mycart != null) {
-                                        if (cart.getAccountid().getAccountid().equals(mycart.getAccountid().getAccountid())) {
-                                            ProductJpaController proCtrl = new ProductJpaController(utx, emf);
-                                            Product product = proCtrl.findProduct(mycart.getProductid().getProductid());
-                                            product.setAmount(product.getAmount() - mycart.getAmount());
-                                            proCtrl.edit(product);
+                if (creditone != null
+                        && credittwo != null
+                        && creditthree != null
+                        && creditfour != null) {
+                    if (creditone.length() > 0
+                            && credittwo.length() > 0
+                            && creditthree.length() > 0
+                            && creditfour.length() > 0) {
+                        String creditnum = creditone + credittwo + creditthree + creditfour;
+                        if (creditnum.length() == 16) {
+                            if (creditexdone != null && creditexdone.length() > 0
+                                    && creditexdtwo != null && creditexdtwo.length() > 0) {
+                                String creditexd = creditexdone + creditexdtwo;
+                                if (creditcvc != null && creditcvc.length() == 3
+                                        && creditexd != null && creditexd.length() == 4) {
+                                    CartJpaController cartCtrl = new CartJpaController(utx, emf);
+                                    Cart cart = new Cart();
+                                    cart.setAccountid(account);
+                                    int maxcart = cartCtrl.getCartCount() + 1;
+                                    for (int i = 0; i < maxcart; i++) {
+                                        Cart mycart = cartCtrl.findCart(i);
+                                        if (mycart != null) {
+                                            if (cart.getAccountid().getAccountid().equals(mycart.getAccountid().getAccountid())) {
+                                                ProductJpaController proCtrl = new ProductJpaController(utx, emf);
+                                                Product product = proCtrl.findProduct(mycart.getProductid().getProductid());
+                                                product.setAmount(product.getAmount() - mycart.getAmount());
+                                                proCtrl.edit(product);
 
-                                            History history = new History();
-                                            history.setOrdernumber(Integer.valueOf(order));
-                                            history.setAccountid(account);
-                                            history.setProductid(product);
-                                            history.setAmount(mycart.getAmount());
-                                            history.setPrice(mycart.getProductid().getPrice());
-                                            history.setDate(new Date());
-                                            hisCtrl.create(history);
+                                                History history = new History();
+                                                history.setOrdernumber(Integer.valueOf(order));
+                                                history.setAccountid(account);
+                                                history.setProductid(product);
+                                                history.setAmount(mycart.getAmount());
+                                                history.setPrice(mycart.getProductid().getPrice());
+                                                history.setDate(new Date());
+                                                hisCtrl.create(history);
 
-                                            List<History> historylist = hisCtrl.findHistoryEntities();
-                                            List<History> historyadd = new ArrayList<>();
-                                            for (History htr : historylist) {
-                                                if (htr.getAccountid().getAccountid() == account.getAccountid()) {
-                                                    historyadd.add(htr);
+                                                List<History> historylist = hisCtrl.findHistoryEntities();
+                                                List<History> historyadd = new ArrayList<>();
+                                                for (History htr : historylist) {
+                                                    if (htr.getAccountid().getAccountid() == account.getAccountid()) {
+                                                        historyadd.add(htr);
+                                                    }
                                                 }
-                                            }
-                                            account.setHistoryList(historylist);
+                                                account.setHistoryList(historylist);
 
-                                            cartCtrl.destroy(i);
+                                                cartCtrl.destroy(i);
+                                            }
                                         }
                                     }
-                                }
 
-                                List<Cart> cartlist = cartCtrl.findCartEntities();
-                                List<Cart> cartadd = new ArrayList<>();
-                                for (Cart ct : cartlist) {
-                                    if (ct.getAccountid().getAccountid() == account.getAccountid()) {
-                                        cartadd.add(ct);
+                                    List<Cart> cartlist = cartCtrl.findCartEntities();
+                                    List<Cart> cartadd = new ArrayList<>();
+                                    for (Cart ct : cartlist) {
+                                        if (ct.getAccountid().getAccountid() == account.getAccountid()) {
+                                            cartadd.add(ct);
+                                        }
                                     }
-                                }
-                                account.setCartList(cartlist);
+                                    account.setCartList(cartlist);
 
-                                session.setAttribute("account", account);
-                                session.setAttribute("numincart", 0);
-                                getServletContext().getRequestDispatcher("/PaymentSuccess.jsp").forward(request, response);
-                                return;
+                                    session.setAttribute("account", account);
+                                    session.setAttribute("numincart", 0);
+                                    getServletContext().getRequestDispatcher("/PaymentSuccess.jsp").forward(request, response);
+                                    return;
+                                }
                             }
                         }
                     }
-                    request.setAttribute("invalidcredit", "Invalid Input!");
+                    request.setAttribute("invalidcredit", "Please input your information.");
                 }
                 getServletContext().getRequestDispatcher("/PaymentConfirm.jsp").forward(request, response);
                 return;

@@ -25,7 +25,7 @@
             <div class="col-lg-7 my-lg-5 mx-auto border border-dark rounded">
                 <div class="mx-4">
                     <h1 class="products">Payment Method</h1>
-                    <h4>Total: <span class="ml-5" style="color: #F56217">฿${totalpriceall}</span></h4>
+                    <h4>Total: <span class="ml-5" style="color: #F56217">฿${sessionScope.totalpriceall}</span></h4>
                     <form class="mt-5" action="PaymentByCreditCard" method="POST">
                         <div>Enter Your credit card :</div>
                         <div class="row my-4">
@@ -59,6 +59,7 @@
                                                     class="form-control" name="creditexdtwo"></div>
                         </div>
                         <div class="form-group my-4">
+                            <input type="hidden" value="${totalpriceall}" name="totalpriceall">
                             <input type="submit" class="btn btn-secondary" value="Confirm Your Payment">
                             <span class="ml-3" style="color: red">${invalidcredit}</span>
                         </div>

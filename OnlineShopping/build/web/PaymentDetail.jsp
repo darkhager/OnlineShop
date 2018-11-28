@@ -64,27 +64,6 @@
                             <c:set var="totalpriceall" value="${totalpriceall - 60}" />
                         </div>
                     </div>
-                    <div class="row my-3">
-                        <div class="col-2">
-                            <strong>Discount</strong>
-                        </div>
-                        <div class="col-7">
-                            <span class="text-muted">-</span>
-                            <form class="my-3">
-                                <div class="form-row">
-                                    <div class="col-8">
-                                        <input type="text" class="form-control" placeholder="Discount Code">
-                                    </div>
-                                    <div class="col">
-                                        <button type="submit" class="btn btn-secondary">Submit</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col">
-                            -
-                        </div>
-                    </div>
                     <div class="row my-4" style="font-size: 125%">
                         <div class="col-9">
                             <strong>Total</strong>

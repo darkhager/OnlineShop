@@ -42,6 +42,7 @@ public class RemoveFromCartServlet extends HttpServlet {
             throws ServletException, IOException, Exception {
         HttpSession session = request.getSession(false);
         String from = request.getParameter("from");
+        String removeall = request.getParameter("removeall");
         String productid = request.getParameter("productid");
         int productint = Integer.valueOf(productid);
 
@@ -56,12 +57,15 @@ public class RemoveFromCartServlet extends HttpServlet {
         cart.setProductid(product);
         cart.setAmount(1);
 
-        for (int i = 0; i < cartCtrl.getCartCount() + 1; i++) {
+        for (int i = 0; i < cartCtrl.getCartCount() * cartCtrl.getCartCount() + 5; i++) {
             Cart mycart = cartCtrl.findCart(i);
             if (mycart != null) {
-                System.out.println("cartid " + mycart.getCartid());
                 if (cart.getAccountid().getAccountid().equals(mycart.getAccountid().getAccountid())) {
                     if (cart.getProductid().getProductid().equals(mycart.getProductid().getProductid())) {
+                        if (removeall != null) {
+                            cartCtrl.destroy(i);
+                            break;
+                        }
                         if (mycart.getAmount() > 1) {
                             mycart.setAmount(mycart.getAmount() - 1);
                             cartCtrl.edit(mycart);
@@ -84,6 +88,17 @@ public class RemoveFromCartServlet extends HttpServlet {
         }
         account.setCartList(cartlist);
         session.setAttribute("account", account);
+
+        int numincart = 0;
+        for (int i = 0; i < cartCtrl.getCartCount() * cartCtrl.getCartCount() + 5; i++) {
+            Cart mycart = cartCtrl.findCart(i);
+            if (mycart != null) {
+                if (mycart.getAccountid().getAccountid().equals(account.getAccountid())) {
+                    numincart = numincart + mycart.getAmount();
+                }
+            }
+        }
+        session.setAttribute("numincart", numincart);
 
         if ("cartpage".equals(from)) {
             getServletContext().getRequestDispatcher("/Cart").forward(request, response);

@@ -37,7 +37,11 @@
                         <tr>
                             <td>${vs.count}</td>
                             <td><img src="product-images/H0_${fav.productid.productid}.jpg" width="100"></td>
-                            <td>${fav.productid.productname}</td>
+                            <td>
+                                <a href="ProductDetail?productid=${fav.productid.productid}">
+                                    ${fav.productid.productname}
+                                </a>
+                            </td>
                             <td>฿${fav.productid.price}</td>
                             <td>
                                 <form class="form-inline" action="RemoveFavorite" method="POST">
