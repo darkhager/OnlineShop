@@ -18,11 +18,12 @@ import web.pro.model.Account;
 import web.pro.model.Favorite;
 import web.pro.model.Product;
 import web.pro.model.controller.exceptions.NonexistentEntityException;
+import web.pro.model.controller.exceptions.PreexistingEntityException;
 import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 public class FavoriteJpaController implements Serializable {
 
@@ -37,7 +38,7 @@ public class FavoriteJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Favorite favorite) throws RollbackFailureException, Exception {
+    public void create(Favorite favorite) throws PreexistingEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -67,6 +68,9 @@ public class FavoriteJpaController implements Serializable {
                 utx.rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
+            if (findFavorite(favorite.getFavoriteid()) != null) {
+                throw new PreexistingEntityException("Favorite " + favorite + " already exists.", ex);
             }
             throw ex;
         } finally {

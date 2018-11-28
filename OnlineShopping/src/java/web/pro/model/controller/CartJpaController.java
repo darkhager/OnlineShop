@@ -18,11 +18,12 @@ import web.pro.model.Account;
 import web.pro.model.Cart;
 import web.pro.model.Product;
 import web.pro.model.controller.exceptions.NonexistentEntityException;
+import web.pro.model.controller.exceptions.PreexistingEntityException;
 import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 public class CartJpaController implements Serializable {
 
@@ -37,7 +38,7 @@ public class CartJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Cart cart) throws RollbackFailureException, Exception {
+    public void create(Cart cart) throws PreexistingEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -67,6 +68,9 @@ public class CartJpaController implements Serializable {
                 utx.rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
+            if (findCart(cart.getCartid()) != null) {
+                throw new PreexistingEntityException("Cart " + cart + " already exists.", ex);
             }
             throw ex;
         } finally {

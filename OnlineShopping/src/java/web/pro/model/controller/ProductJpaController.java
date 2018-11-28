@@ -6,7 +6,6 @@
 package web.pro.model.controller;
 
 import java.io.Serializable;
-import java.sql.ResultSet;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,7 +16,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
-import web.pro.model.Account;
 import web.pro.model.Favorite;
 import web.pro.model.Cart;
 import web.pro.model.History;
@@ -29,7 +27,7 @@ import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 public class ProductJpaController implements Serializable {
 
@@ -377,19 +375,6 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-    
-    public List<Product> findProductEntitiesSearch(String search) {
-        EntityManager em = getEntityManager();
-        Query query = em.createNamedQuery("Product.findByBrand");
-        query.setParameter("brand", "'%"+search+"%'");
-        try {
-            return (List<Product>) (Product) query.getSingleResult();
-        } catch (Exception e) {
-            return null;
-        } finally {
-            em.close();
-        }
-    }
 
     public int getProductCount() {
         EntityManager em = getEntityManager();
@@ -403,5 +388,5 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-
+    
 }
