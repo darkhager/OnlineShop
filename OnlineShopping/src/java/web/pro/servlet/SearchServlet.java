@@ -25,9 +25,10 @@ import web.pro.model.controller.ProductJpaController;
  * @author 60130
  */
 public class SearchServlet extends HttpServlet {
-
+    
     @PersistenceUnit(unitName = "OnlineShoppingPU")
     EntityManagerFactory emf;
+    
     @Resource
     UserTransaction utx;
 

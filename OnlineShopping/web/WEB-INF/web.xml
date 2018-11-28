@@ -69,12 +69,8 @@
         <servlet-class>web.pro.servlet.FavoriteServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>FilterServlet</servlet-name>
-        <servlet-class>web.pro.servlet.FilterServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>FilterServlet</servlet-name>
-        <servlet-class>web.pro.servlet.FilterServlet</servlet-class>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>web.pro.servlet.SearchServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -145,12 +141,8 @@
         <url-pattern>/Favorite</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>FilterServlet</servlet-name>
-        <url-pattern>/Filter</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FilterServlet</servlet-name>
-        <url-pattern>/Filter</url-pattern>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/Search</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
