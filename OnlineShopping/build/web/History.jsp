@@ -42,6 +42,12 @@
 
                     <c:forEach items="${history}" var="htr">
                         <c:if test="${ordernum != htr.ordernumber && ordernum != 0}">
+                            <tr>
+                                <td></td>
+                                <td colspan="3">Shipping Charge <span class="text-muted ml-4">Registered</span></td>
+                                <td colspan="2">-฿$60</td>
+                                <c:set var="orderprice" value="${orderprice - 60}"/>
+                            </tr>
                             <tr class="font-weight-bold" style="font-size: 125%">
                                 <td></td>
                                 <td colspan="2">Total</td>
@@ -87,13 +93,27 @@
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
-                    <tr class="font-weight-bold" style="font-size: 125%">
-                        <td></td>
-                        <td colspan="2">Total</td>
-                        <td>${orderamount}</td>
-                        <td>฿${orderprice}</td>
-                        <td></td>
-                    </tr>
+                    <c:choose>
+                        <c:when test="${ordernum <= 0}">
+                            <tr>
+                                <td colspan="6" class="text-center">Nothing here.</td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td></td>
+                                <td colspan="3">Shipping Charge <span class="text-muted ml-4">Registered</span></td>
+                                <td colspan="2">-฿$60</td>
+                                <c:set var="orderprice" value="${orderprice - 60}"/>
+                            </tr>
+                            <tr class="font-weight-bold" style="font-size: 125%">
+                                <td></td>
+                                <td colspan="2">Total</td>
+                                <td>${orderamount}</td>
+                                <td colspan="2">฿${orderprice}</td>
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
                 </tbody>
             </table>
             <div class="row my-5">

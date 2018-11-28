@@ -52,7 +52,7 @@ public class PaymentDetailServlet extends HttpServlet {
                 
                 List<Cart> cart = account.getCartList();
                 session.setAttribute("cart", cart);
-                session.setAttribute("totalpriceall", request.getParameter("totalpriceall"));
+                session.setAttribute("totalprice", request.getParameter("totalprice"));
 
                 getServletContext().getRequestDispatcher("/PaymentDetail.jsp").forward(request, response);
                 return;

@@ -48,8 +48,8 @@ public class SearchServlet extends HttpServlet {
             if (search.trim().length() > 0) {
                 HttpSession session = request.getSession(false);
                 ProductJpaController pjc = new ProductJpaController(utx, emf);
-                List<Product> proList = pjc.findProductBySearch(search);
-                session.setAttribute("products", proList);
+                //List<Product> proList = pjc.findProductBySearch(search);
+                //session.setAttribute("products", proList);
                 getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
             }
         }
