@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Product;
 import web.pro.model.controller.ProductJpaController;
@@ -45,13 +46,11 @@ public class SearchServlet extends HttpServlet {
             throws ServletException, IOException {
         String search = request.getParameter("search");
         if (search != null) {
+            HttpSession session = request.getSession(false);
             ProductJpaController pjc = new ProductJpaController(utx, emf);
-            List<Product> proList = pjc.findProductEntities();
-            List<Product> newList = new ArrayList<>();
-            String index = null;
-            for (Product product : proList) {
-                
-            }
+            List<Product> proList = pjc.findProductBySearch(search);
+            session.setAttribute("products", proList);
+            getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
         }
     }
 
