@@ -7,7 +7,6 @@ package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
@@ -16,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Product;
 import web.pro.model.controller.ProductJpaController;
@@ -28,7 +28,6 @@ public class SearchServlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "OnlineShoppingPU")
     EntityManagerFactory emf;
-
     @Resource
     UserTransaction utx;
 
@@ -45,12 +44,12 @@ public class SearchServlet extends HttpServlet {
             throws ServletException, IOException {
         String search = request.getParameter("search");
         if (search != null) {
-            ProductJpaController pjc = new ProductJpaController(utx, emf);
-            List<Product> proList = pjc.findProductEntities();
-            List<Product> newList = new ArrayList<>();
-            String index = null;
-            for (Product product : proList) {
-                
+            if (search.trim().length() > 0) {
+                HttpSession session = request.getSession(false);
+                ProductJpaController pjc = new ProductJpaController(utx, emf);
+                List<Product> proList = pjc.findProductBySearch(search);
+                session.setAttribute("products", proList);
+                getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
             }
         }
     }

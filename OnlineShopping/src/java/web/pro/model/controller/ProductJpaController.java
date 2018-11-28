@@ -16,6 +16,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
+import web.pro.model.Account;
 import web.pro.model.Favorite;
 import web.pro.model.Cart;
 import web.pro.model.History;
@@ -27,7 +28,7 @@ import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 public class ProductJpaController implements Serializable {
 
@@ -371,6 +372,19 @@ public class ProductJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             return em.find(Product.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Product> findProductBySearch(String search) {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.search");
+        query.setParameter("search", "%" + search + "%");
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
         } finally {
             em.close();
         }
