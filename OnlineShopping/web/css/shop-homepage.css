@@ -17,7 +17,7 @@ body {
 .headerpic {
     background-image: url("../images/headerpic.jpg");
     background-size: cover;
-    height: 700px;
+    height: 100vh;
     color: #ffffff;
 }
 
