@@ -54,11 +54,11 @@
             </div>
             <div id="m3" class="multi-collapse show" aria-labelledby="headingThree" data-parent="#accordionExample">
                 <div class="card-body ml-4">
-                    <div><a href="Search?search=sony">Sony</a></div>
-                    <div><a href="Search?search=kz">KZ</a></div>
-                    <div><a href="Search?search=bose">Bose</a></div>
-                    <div><a href="Search?search=jbl">JBL</a></div>
-                    <div><a href="Search?search=bando">B&O</a></div>
+                    <div><a href="#">Sony</a></div>
+                    <div><a href="#">KZ</a></div>
+                    <div><a href="#">Bose</a></div>
+                    <div><a href="#">JBL</a></div>
+                    <div><a href="#">B&O</a></div>
                 </div>
             </div>
         </div>
