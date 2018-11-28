@@ -17,6 +17,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
+import web.pro.model.Account;
 import web.pro.model.Favorite;
 import web.pro.model.Cart;
 import web.pro.model.History;
@@ -372,6 +373,19 @@ public class ProductJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             return em.find(Product.class, id);
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Product> findProductEntitiesSearch(String search) {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.findByBrand");
+        query.setParameter("brand", "'%"+search+"%'");
+        try {
+            return (List<Product>) (Product) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
         } finally {
             em.close();
         }
