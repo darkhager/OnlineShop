@@ -11,7 +11,7 @@ import web.pro.model.Passwordreset;
 import web.pro.model.Registeremail;
 import web.pro.model.Review;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-15T16:08:44")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-28T23:11:53")
 @StaticMetamodel(Account.class)
 public class Account_ { 
 

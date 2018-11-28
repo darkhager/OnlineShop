@@ -13,10 +13,6 @@
         <servlet-class>web.pro.servlet.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AccountActivateServlet</servlet-name>
-        <servlet-class>web.pro.servlet.AccountActivateServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ProductPageServlet</servlet-name>
         <servlet-class>web.pro.servlet.ProductPageServlet</servlet-class>
     </servlet>
@@ -79,10 +75,6 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AccountActivateServlet</servlet-name>
-        <url-pattern>/AccountActivate</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductPageServlet</servlet-name>

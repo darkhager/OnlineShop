@@ -9,7 +9,7 @@ import web.pro.model.Favorite;
 import web.pro.model.History;
 import web.pro.model.Review;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-15T16:08:44")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-28T23:11:53")
 @StaticMetamodel(Product.class)
 public class Product_ { 
 

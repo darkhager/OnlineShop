@@ -28,7 +28,7 @@ import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
 public class AccountJpaController implements Serializable {
 
@@ -479,8 +479,8 @@ public class AccountJpaController implements Serializable {
             em.close();
         }
     }
-
-    public Account findAccountByUserName(String username) {
+    
+     public Account findAccountByUserName(String username) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Account.findByUsername");
         query.setParameter("username", username);
@@ -531,5 +531,5 @@ public class AccountJpaController implements Serializable {
             em.close();
         }
     }
-
+    
 }

@@ -6,7 +6,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 import web.pro.model.Account;
 import web.pro.model.Product;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-15T16:08:44")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-28T23:11:53")
 @StaticMetamodel(Favorite.class)
 public class Favorite_ { 
 
