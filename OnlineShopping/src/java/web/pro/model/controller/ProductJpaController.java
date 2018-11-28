@@ -375,11 +375,83 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-    
+
     public List<Product> findProductBySearch(String search) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Product.search");
         query.setParameter("search", "%" + search + "%");
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Product> findProductPrice1() {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.price1");
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Product> findProductPrice2() {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.price2");
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Product> findProductPrice3() {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.price3");
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Product> findProductPrice4() {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.price4");
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Product> findProductPrice5() {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.price5");
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Product> findProductPrice6() {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Product.price6");
         try {
             return query.getResultList();
         } catch (Exception e) {
@@ -401,5 +473,5 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

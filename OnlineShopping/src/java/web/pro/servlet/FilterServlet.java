@@ -7,16 +7,31 @@ package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
+import web.pro.model.Product;
+import web.pro.model.controller.ProductJpaController;
 
 /**
  *
  * @author 60130
  */
 public class FilterServlet extends HttpServlet {
+
+    @PersistenceUnit(unitName = "OnlineShoppingPU")
+    EntityManagerFactory emf;
+
+    @Resource
+    UserTransaction utx;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,7 +44,38 @@ public class FilterServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String price = request.getParameter("price");
+        String priceString = request.getParameter("price");
+
+        if (priceString != null) {
+            if (priceString.trim().length() > 0) {
+                int price = Integer.parseInt(priceString);
+                HttpSession session = request.getSession(false);
+                ProductJpaController pjc = new ProductJpaController(utx, emf);
+                List<Product> proList = new ArrayList<>();
+                switch (price) {
+                    case 1:
+                        proList = pjc.findProductPrice1();
+                        break;
+                    case 2:
+                        proList = pjc.findProductPrice2();
+                        break;
+                    case 3:
+                        proList = pjc.findProductPrice3();
+                        break;
+                    case 4:
+                        proList = pjc.findProductPrice4();
+                        break;
+                    case 5:
+                        proList = pjc.findProductPrice5();
+                        break;
+                    case 6:
+                        proList = pjc.findProductPrice6();
+                        break;
+                }
+                session.setAttribute("products", proList);
+                getServletContext().getRequestDispatcher("/ShopPage.jsp").forward(request, response);
+            }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
