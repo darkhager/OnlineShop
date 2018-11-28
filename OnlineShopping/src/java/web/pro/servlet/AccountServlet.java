@@ -35,7 +35,7 @@ public class AccountServlet extends HttpServlet {
         if (session != null) {
             Account check = (Account) session.getAttribute("account");
             if (check == null) {
-                getServletContext().getRequestDispatcher("/Logout").forward(request, response);
+                getServletContext().getRequestDispatcher("/Login").forward(request, response);
                 return;
             } else {
                 AccountJpaController accCtrl = new AccountJpaController(utx, emf);
@@ -46,7 +46,7 @@ public class AccountServlet extends HttpServlet {
                 return;
             }
         }
-        getServletContext().getRequestDispatcher("/Logout").forward(request, response);
+        getServletContext().getRequestDispatcher("/Login").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -35,13 +35,13 @@ public class PaymentDetailServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        int numincart = (int) session.getAttribute("numincart");
         if (session != null) {
             Account check = (Account) session.getAttribute("account");
             if (check == null) {
                 getServletContext().getRequestDispatcher("/Login").forward(request, response);
                 return;
             } else {
+                int numincart = (int) session.getAttribute("numincart");
                 if (numincart <= 0) {
                     getServletContext().getRequestDispatcher("/Cart").forward(request, response);
                     return;
