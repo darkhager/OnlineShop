@@ -28,8 +28,8 @@
                 <div class="col-lg-9">
                     <div class="navbar navbar-light my-lg-4">
                         <a class="navbar-brand">All Headphone</a>
-                        <form class="form-inline">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" required>
+                        <form action="Search" method="post" class="form-inline">
+                            <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">
                             <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
                         </form>
                     </div>
