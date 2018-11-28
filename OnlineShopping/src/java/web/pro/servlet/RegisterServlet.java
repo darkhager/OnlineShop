@@ -21,8 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
+import web.pro.model.Accountactivate;
 import web.pro.model.Registeremail;
 import web.pro.model.controller.AccountJpaController;
+import web.pro.model.controller.AccountactivateJpaController;
 import web.pro.model.controller.RegisteremailJpaController;
 
 /**
@@ -78,7 +80,13 @@ public class RegisterServlet extends HttpServlet {
             account.setPostcode(Integer.valueOf(postCode));
             account.setPhonenumber(phoneNumber);
             ajc.create(account);
-            
+
+            AccountactivateJpaController aajc = new AccountactivateJpaController(utx, emf);
+            Accountactivate aa = new Accountactivate();
+            aa.setAccountid(account);
+            aa.setActivatecode(UUID.randomUUID().toString().replace("-", "").substring(0, 15));
+            aajc.create(aa);
+
             getServletContext().getRequestDispatcher("/RegisterSuccess.jsp").forward(request, response);
             return;
         }

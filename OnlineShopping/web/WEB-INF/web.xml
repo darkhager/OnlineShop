@@ -72,6 +72,10 @@
         <servlet-name>FilterServlet</servlet-name>
         <servlet-class>web.pro.servlet.FilterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AccountActivateServlet</servlet-name>
+        <servlet-class>web.pro.servlet.AccountActivateServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -143,6 +147,10 @@
     <servlet-mapping>
         <servlet-name>FilterServlet</servlet-name>
         <url-pattern>/Filter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountActivateServlet</servlet-name>
+        <url-pattern>/AccountActivate</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

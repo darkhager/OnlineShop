@@ -12,12 +12,9 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/gitproject/OnlineShop/OnlineShop/OnlineShopping/web/include/Leftmenu.jsp</file>
-            <file>file:/E:/gitproject/OnlineShop/OnlineShop/OnlineShopping/src/java/web/pro/servlet/FilterServlet.java</file>
+            <file>file:/E:/gitproject/OnlineShop/OnlineShop/OnlineShopping/src/java/web/pro/model/controller/AccountactivateJpaController.java</file>
             <file>file:/E:/gitproject/OnlineShop/OnlineShop/OnlineShopping/src/java/web/pro/servlet/RegisterServlet.java</file>
-            <file>file:/E:/gitproject/OnlineShop/OnlineShop/OnlineShopping/src/java/web/pro/model/History.java</file>
-            <file>file:/E:/gitproject/OnlineShop/OnlineShop/OnlineShopping/src/java/web/pro/servlet/SearchServlet.java</file>
-            <file>file:/E:/gitproject/OnlineShop/OnlineShop/OnlineShopping/web/WEB-INF/web.xml</file>
+            <file>file:/E:/gitproject/OnlineShop/OnlineShop/OnlineShopping/src/java/web/pro/servlet/AccountActivateServlet.java</file>
         </group>
     </open-files>
 </project-private>

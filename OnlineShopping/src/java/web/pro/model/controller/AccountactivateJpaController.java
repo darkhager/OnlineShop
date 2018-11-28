@@ -165,6 +165,19 @@ public class AccountactivateJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public Accountactivate findAccountActivateByAccountId(Account account) {
+        EntityManager em = getEntityManager();
+        Query query = em.createNamedQuery("Accountactivate.findByAccountid");
+        query.setParameter("accountid", account.getAccountid());
+        try {
+            return (Accountactivate) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 
     public Accountactivate findAccountactivate(Integer id) {
         EntityManager em = getEntityManager();
