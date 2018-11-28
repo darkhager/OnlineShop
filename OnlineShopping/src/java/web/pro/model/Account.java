@@ -43,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Account.findByPhonenumber", query = "SELECT a FROM Account a WHERE a.phonenumber = :phonenumber")})
 public class Account implements Serializable {
 
+    @OneToMany(mappedBy = "accountid")
+    private List<Accountactivate> accountactivateList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -267,6 +270,15 @@ public class Account implements Serializable {
     @Override
     public String toString() {
         return "web.pro.model.Account[ accountid=" + accountid + " ]";
+    }
+
+    @XmlTransient
+    public List<Accountactivate> getAccountactivateList() {
+        return accountactivateList;
+    }
+
+    public void setAccountactivateList(List<Accountactivate> accountactivateList) {
+        this.accountactivateList = accountactivateList;
     }
     
 }
