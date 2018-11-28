@@ -42,6 +42,12 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Product.price4", query = "SELECT p FROM Product p WHERE p.price > 5000 and p.price <= 10000")
     , @NamedQuery(name = "Product.price5", query = "SELECT p FROM Product p WHERE p.price > 10000 and p.price <= 30000")
     , @NamedQuery(name = "Product.price6", query = "SELECT p FROM Product p WHERE p.price > 30000")
+    , @NamedQuery(name = "Product.fullSize", query = "SELECT p FROM Product p WHERE lower(p.producttype) = 'full size'")
+    , @NamedQuery(name = "Product.onEar", query = "SELECT p FROM Product p WHERE lower(p.producttype) = 'on ear'")
+    , @NamedQuery(name = "Product.inEar", query = "SELECT p FROM Product p WHERE lower(p.producttype) = 'in ear'")
+    , @NamedQuery(name = "Product.earBud", query = "SELECT p FROM Product p WHERE lower(p.producttype) = 'ear bud'")
+    , @NamedQuery(name = "Product.clipEar", query = "SELECT p FROM Product p WHERE lower(p.producttype) = 'clip ear'")
+    , @NamedQuery(name = "Product.ciem", query = "SELECT p FROM Product p WHERE lower(p.producttype) = 'ciem'")
     , @NamedQuery(name = "Product.search", query = "SELECT p FROM Product p WHERE lower(p.productname) like :search or lower(p.producttype) like :search or lower(p.detail) like :search or lower(p.brand) like :search")})
 public class Product implements Serializable {
 
