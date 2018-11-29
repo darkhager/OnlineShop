@@ -69,7 +69,7 @@
                             <div class="form-group col-md-6">
                                 <label>Post Code</label>
                                 <input type="text" class="form-control" name="postcode"
-                                       placeholder="Post Code">
+                                       placeholder="Post Code" pattern="[0-9]">
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Phone Number</label>
