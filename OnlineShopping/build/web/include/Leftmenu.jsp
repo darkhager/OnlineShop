@@ -19,11 +19,10 @@
             <div id="m1" class="multi-collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body ml-4">
                     <div><a href="Search?search=full size">Full Size</a></div>
-                    <div><a href="Search?search=on ear">On Ear</a></div>
                     <div><a href="Search?search=in ear">In Ear</a></div>
-                    <div><a href="Search?search=ear bud">Ear Bud</a></div>
                     <div><a href="Search?search=clip ear">Clip Ear</a></div>
-                    <div><a href="Search?search=ciem">Ciem</a></div>
+                    <div><a href="Search?search=ciem">Ciem (Custom in-ear monitor)</a></div>
+                    <div><a href="Search?search=wireless">Wireless</a></div>
                 </div>
             </div>
         </div>

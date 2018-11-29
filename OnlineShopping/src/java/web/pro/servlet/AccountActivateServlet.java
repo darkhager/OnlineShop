@@ -7,6 +7,7 @@ package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
 import web.pro.model.Accountactivate;
+import web.pro.model.controller.AccountJpaController;
 import web.pro.model.controller.AccountactivateJpaController;
 
 /**
@@ -54,8 +56,15 @@ public class AccountActivateServlet extends HttpServlet {
                 AccountactivateJpaController aajc = new AccountactivateJpaController(utx, emf);
                 Accountactivate aa = aajc.findAccountActivateByAccountId(account);
                 if(aa.getActivatecode() == activateCode){
-                    
+                    AccountJpaController ajc = new AccountJpaController(utx, emf);
+                    Date date = new Date();
+                    account.setActivatedate(date);
+                    ajc.edit(account);
+                    getServletContext().getRequestDispatcher("/ActivateConfirm.jsp").forward(request, response);
+                    return;
                 }
+                request.setAttribute("message", "Activate code doesn't match!");
+                getServletContext().getRequestDispatcher("/AccountActivate.jsp").forward(request, response);
             }
         }
     }
