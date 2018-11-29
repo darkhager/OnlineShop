@@ -21,7 +21,7 @@
                     <div><a href="Search?search=full size">Full Size</a></div>
                     <div><a href="Search?search=in ear">In Ear</a></div>
                     <div><a href="Search?search=clip ear">Clip Ear</a></div>
-                    <div><a href="Search?search=ciem">Ciem (Custom in-ear monitor)</a></div>
+                    <div><a href="Search?search=ciem">Ciem</a></div>
                     <div><a href="Search?search=wireless">Wireless</a></div>
                 </div>
             </div>
