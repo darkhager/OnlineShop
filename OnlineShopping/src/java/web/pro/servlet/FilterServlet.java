@@ -29,19 +29,9 @@ public class FilterServlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "OnlineShoppingPU")
     EntityManagerFactory emf;
-
     @Resource
     UserTransaction utx;
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String priceString = request.getParameter("price");
@@ -55,21 +45,27 @@ public class FilterServlet extends HttpServlet {
                 switch (price) {
                     case 1:
                         proList = pjc.findProductPrice1();
+                        request.setAttribute("result", "Less than ฿1,000");
                         break;
                     case 2:
                         proList = pjc.findProductPrice2();
+                        request.setAttribute("result", "฿1,001 - ฿2,000");
                         break;
                     case 3:
                         proList = pjc.findProductPrice3();
+                        request.setAttribute("result", "฿2,001 - ฿5,000");
                         break;
                     case 4:
                         proList = pjc.findProductPrice4();
+                        request.setAttribute("result", "฿5,001 - ฿10,000");
                         break;
                     case 5:
                         proList = pjc.findProductPrice5();
+                        request.setAttribute("result", "฿10,001 - ฿30,000");
                         break;
                     case 6:
                         proList = pjc.findProductPrice6();
+                        request.setAttribute("result", "More than ฿30,000");
                         break;
                 }
                 session.setAttribute("products", proList);

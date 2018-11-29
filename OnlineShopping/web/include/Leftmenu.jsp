@@ -34,12 +34,12 @@
             </div>
             <div id="m2" class="multi-collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
                 <div class="card-body ml-4">
-                    <div><a href="Filter?price=1">Less than 1,000</a></div>
-                    <div><a href="Filter?price=2">1,001 - 2,000</a></div>
-                    <div><a href="Filter?price=3">2,001 - 5,000</a></div>
-                    <div><a href="Filter?price=4">5,001 - 10,000</a></div>
-                    <div><a href="Filter?price=5">10,001 - 30,000</a></div>
-                    <div><a href="Filter?price=6">More than 30,000</a></div>
+                    <div><a href="Filter?price=1">Less than ฿1,000</a></div>
+                    <div><a href="Filter?price=2">฿1,001 - ฿2,000</a></div>
+                    <div><a href="Filter?price=3">฿2,001 - ฿5,000</a></div>
+                    <div><a href="Filter?price=4">฿5,001 - ฿10,000</a></div>
+                    <div><a href="Filter?price=5">฿10,001 - ฿30,000</a></div>
+                    <div><a href="Filter?price=6">More than ฿30,000</a></div>
                 </div>
             </div>
         </div>
