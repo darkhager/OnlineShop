@@ -99,7 +99,7 @@ public class Accountactivate implements Serializable {
 
     @Override
     public String toString() {
-        return "web.pro.model.Accountactivate[ activateid=" + activateid + " ]";
+        return "web.pro.controller.Accountactivate[ activateid=" + activateid + " ]";
     }
     
 }

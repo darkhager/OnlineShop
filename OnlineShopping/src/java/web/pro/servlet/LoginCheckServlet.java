@@ -7,18 +7,29 @@ package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 import web.pro.model.Account;
+import web.pro.model.controller.AccountactivateJpaController;
 
 /**
  *
  * @author 60130
  */
 public class LoginCheckServlet extends HttpServlet {
+
+    @PersistenceUnit(unitName = "OnlineShoppingPU")
+    EntityManagerFactory emf;
+
+    @Resource
+    UserTransaction utx;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,10 +44,12 @@ public class LoginCheckServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         Account account = (Account) session.getAttribute("account");
-        if(account.getActivatedate() != null){
+        if (account.getActivatedate() != null) {
             getServletContext().getRequestDispatcher("/ProductPage").forward(request, response);
             return;
         }
+        AccountactivateJpaController aajc = new AccountactivateJpaController(utx, emf);
+        request.setAttribute("message", "Please activate your account first!");
         getServletContext().getRequestDispatcher("/AccountActivate.jsp").forward(request, response);
     }
 

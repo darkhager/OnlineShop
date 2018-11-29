@@ -26,7 +26,7 @@ import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 public class ProductJpaController implements Serializable {
 

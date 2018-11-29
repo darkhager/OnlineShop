@@ -259,7 +259,7 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        return "web.pro.model.Account[ accountid=" + accountid + " ]";
+        return "web.pro.controller.Account[ accountid=" + accountid + " ]";
     }
     
 }

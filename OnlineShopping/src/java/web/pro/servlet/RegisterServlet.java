@@ -7,7 +7,9 @@ package web.pro.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,10 +24,8 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
 import web.pro.model.Accountactivate;
-import web.pro.model.Registeremail;
 import web.pro.model.controller.AccountJpaController;
 import web.pro.model.controller.AccountactivateJpaController;
-import web.pro.model.controller.RegisteremailJpaController;
 
 /**
  *
@@ -83,11 +83,11 @@ public class RegisterServlet extends HttpServlet {
 
             AccountactivateJpaController aajc = new AccountactivateJpaController(utx, emf);
             Accountactivate aa = new Accountactivate();
+            aa.setActivatecode(UUID.randomUUID().toString().replace("-", "").substring(0, 9));
             aa.setAccountid(account);
-            aa.setActivatecode(UUID.randomUUID().toString().replace("-", "").substring(0, 15));
             aajc.create(aa);
 
-            getServletContext().getRequestDispatcher("/RegisterSuccess.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/AccountActivate").forward(request, response);
             return;
         }
         request.setAttribute("message", "Please input your information.");
