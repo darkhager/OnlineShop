@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 @Entity
 @Table(name = "FAVORITE")
@@ -96,7 +96,7 @@ public class Favorite implements Serializable {
 
     @Override
     public String toString() {
-        return "web.pro.model.Favorite[ favoriteid=" + favoriteid + " ]";
+        return "web.pro.controller.Favorite[ favoriteid=" + favoriteid + " ]";
     }
     
 }

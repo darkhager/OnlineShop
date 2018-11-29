@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 @Entity
 @Table(name = "HISTORY")
@@ -159,7 +159,7 @@ public class History implements Serializable {
 
     @Override
     public String toString() {
-        return "web.pro.model.History[ historyid=" + historyid + " ]";
+        return "web.pro.controller.History[ historyid=" + historyid + " ]";
     }
     
 }

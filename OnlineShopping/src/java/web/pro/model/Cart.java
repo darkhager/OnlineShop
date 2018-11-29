@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 @Entity
 @Table(name = "CART")
@@ -114,7 +114,7 @@ public class Cart implements Serializable {
 
     @Override
     public String toString() {
-        return "web.pro.model.Cart[ cartid=" + cartid + " ]";
+        return "web.pro.controller.Cart[ cartid=" + cartid + " ]";
     }
     
 }

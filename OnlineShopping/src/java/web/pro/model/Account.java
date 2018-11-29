@@ -97,17 +97,11 @@ public class Account implements Serializable {
     @OneToMany(mappedBy = "accountid")
     private List<Accountactivate> accountactivateList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
-    private List<Passwordreset> passwordresetList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
-    private List<Review> reviewList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<Favorite> favoriteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<Cart> cartList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<History> historyList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
-    private List<Registeremail> registeremailList;
 
     public Account() {
     }
@@ -217,24 +211,6 @@ public class Account implements Serializable {
     }
 
     @XmlTransient
-    public List<Passwordreset> getPasswordresetList() {
-        return passwordresetList;
-    }
-
-    public void setPasswordresetList(List<Passwordreset> passwordresetList) {
-        this.passwordresetList = passwordresetList;
-    }
-
-    @XmlTransient
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
-    }
-
-    @XmlTransient
     public List<Favorite> getFavoriteList() {
         return favoriteList;
     }
@@ -261,15 +237,6 @@ public class Account implements Serializable {
         this.historyList = historyList;
     }
 
-    @XmlTransient
-    public List<Registeremail> getRegisteremailList() {
-        return registeremailList;
-    }
-
-    public void setRegisteremailList(List<Registeremail> registeremailList) {
-        this.registeremailList = registeremailList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -292,7 +259,7 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        return "web.pro.model.Account[ accountid=" + accountid + " ]";
+        return "web.pro.controller.Account[ accountid=" + accountid + " ]";
     }
     
 }

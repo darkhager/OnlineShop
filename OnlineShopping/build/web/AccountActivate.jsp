@@ -1,6 +1,6 @@
 <%-- 
     Document   : AccountActivate
-    Created on : Nov 29, 2018, 2:16:21 PM
+    Created on : Nov 29, 2018, 2:35:45 PM
     Author     : 60130
 --%>
 
@@ -12,6 +12,11 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Account Activate</h1>
+        <form action="AccountActivate" method="post">
+            <div>${message}</div>
+            <div><input type="text" name="activatecode"></div>
+            <div><input type="submit"></div>
+        </form>
     </body>
 </html>

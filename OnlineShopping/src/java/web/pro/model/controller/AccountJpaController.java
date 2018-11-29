@@ -17,12 +17,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
-import web.pro.model.Passwordreset;
-import web.pro.model.Review;
 import web.pro.model.Favorite;
 import web.pro.model.Cart;
 import web.pro.model.History;
-import web.pro.model.Registeremail;
 import web.pro.model.controller.exceptions.IllegalOrphanException;
 import web.pro.model.controller.exceptions.NonexistentEntityException;
 import web.pro.model.controller.exceptions.RollbackFailureException;
@@ -48,12 +45,6 @@ public class AccountJpaController implements Serializable {
         if (account.getAccountactivateList() == null) {
             account.setAccountactivateList(new ArrayList<Accountactivate>());
         }
-        if (account.getPasswordresetList() == null) {
-            account.setPasswordresetList(new ArrayList<Passwordreset>());
-        }
-        if (account.getReviewList() == null) {
-            account.setReviewList(new ArrayList<Review>());
-        }
         if (account.getFavoriteList() == null) {
             account.setFavoriteList(new ArrayList<Favorite>());
         }
@@ -62,9 +53,6 @@ public class AccountJpaController implements Serializable {
         }
         if (account.getHistoryList() == null) {
             account.setHistoryList(new ArrayList<History>());
-        }
-        if (account.getRegisteremailList() == null) {
-            account.setRegisteremailList(new ArrayList<Registeremail>());
         }
         EntityManager em = null;
         try {
@@ -76,18 +64,6 @@ public class AccountJpaController implements Serializable {
                 attachedAccountactivateList.add(accountactivateListAccountactivateToAttach);
             }
             account.setAccountactivateList(attachedAccountactivateList);
-            List<Passwordreset> attachedPasswordresetList = new ArrayList<Passwordreset>();
-            for (Passwordreset passwordresetListPasswordresetToAttach : account.getPasswordresetList()) {
-                passwordresetListPasswordresetToAttach = em.getReference(passwordresetListPasswordresetToAttach.getClass(), passwordresetListPasswordresetToAttach.getResetid());
-                attachedPasswordresetList.add(passwordresetListPasswordresetToAttach);
-            }
-            account.setPasswordresetList(attachedPasswordresetList);
-            List<Review> attachedReviewList = new ArrayList<Review>();
-            for (Review reviewListReviewToAttach : account.getReviewList()) {
-                reviewListReviewToAttach = em.getReference(reviewListReviewToAttach.getClass(), reviewListReviewToAttach.getReviewid());
-                attachedReviewList.add(reviewListReviewToAttach);
-            }
-            account.setReviewList(attachedReviewList);
             List<Favorite> attachedFavoriteList = new ArrayList<Favorite>();
             for (Favorite favoriteListFavoriteToAttach : account.getFavoriteList()) {
                 favoriteListFavoriteToAttach = em.getReference(favoriteListFavoriteToAttach.getClass(), favoriteListFavoriteToAttach.getFavoriteid());
@@ -106,12 +82,6 @@ public class AccountJpaController implements Serializable {
                 attachedHistoryList.add(historyListHistoryToAttach);
             }
             account.setHistoryList(attachedHistoryList);
-            List<Registeremail> attachedRegisteremailList = new ArrayList<Registeremail>();
-            for (Registeremail registeremailListRegisteremailToAttach : account.getRegisteremailList()) {
-                registeremailListRegisteremailToAttach = em.getReference(registeremailListRegisteremailToAttach.getClass(), registeremailListRegisteremailToAttach.getRegisterid());
-                attachedRegisteremailList.add(registeremailListRegisteremailToAttach);
-            }
-            account.setRegisteremailList(attachedRegisteremailList);
             em.persist(account);
             for (Accountactivate accountactivateListAccountactivate : account.getAccountactivateList()) {
                 Account oldAccountidOfAccountactivateListAccountactivate = accountactivateListAccountactivate.getAccountid();
@@ -120,24 +90,6 @@ public class AccountJpaController implements Serializable {
                 if (oldAccountidOfAccountactivateListAccountactivate != null) {
                     oldAccountidOfAccountactivateListAccountactivate.getAccountactivateList().remove(accountactivateListAccountactivate);
                     oldAccountidOfAccountactivateListAccountactivate = em.merge(oldAccountidOfAccountactivateListAccountactivate);
-                }
-            }
-            for (Passwordreset passwordresetListPasswordreset : account.getPasswordresetList()) {
-                Account oldAccountidOfPasswordresetListPasswordreset = passwordresetListPasswordreset.getAccountid();
-                passwordresetListPasswordreset.setAccountid(account);
-                passwordresetListPasswordreset = em.merge(passwordresetListPasswordreset);
-                if (oldAccountidOfPasswordresetListPasswordreset != null) {
-                    oldAccountidOfPasswordresetListPasswordreset.getPasswordresetList().remove(passwordresetListPasswordreset);
-                    oldAccountidOfPasswordresetListPasswordreset = em.merge(oldAccountidOfPasswordresetListPasswordreset);
-                }
-            }
-            for (Review reviewListReview : account.getReviewList()) {
-                Account oldAccountidOfReviewListReview = reviewListReview.getAccountid();
-                reviewListReview.setAccountid(account);
-                reviewListReview = em.merge(reviewListReview);
-                if (oldAccountidOfReviewListReview != null) {
-                    oldAccountidOfReviewListReview.getReviewList().remove(reviewListReview);
-                    oldAccountidOfReviewListReview = em.merge(oldAccountidOfReviewListReview);
                 }
             }
             for (Favorite favoriteListFavorite : account.getFavoriteList()) {
@@ -167,15 +119,6 @@ public class AccountJpaController implements Serializable {
                     oldAccountidOfHistoryListHistory = em.merge(oldAccountidOfHistoryListHistory);
                 }
             }
-            for (Registeremail registeremailListRegisteremail : account.getRegisteremailList()) {
-                Account oldAccountidOfRegisteremailListRegisteremail = registeremailListRegisteremail.getAccountid();
-                registeremailListRegisteremail.setAccountid(account);
-                registeremailListRegisteremail = em.merge(registeremailListRegisteremail);
-                if (oldAccountidOfRegisteremailListRegisteremail != null) {
-                    oldAccountidOfRegisteremailListRegisteremail.getRegisteremailList().remove(registeremailListRegisteremail);
-                    oldAccountidOfRegisteremailListRegisteremail = em.merge(oldAccountidOfRegisteremailListRegisteremail);
-                }
-            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -199,35 +142,13 @@ public class AccountJpaController implements Serializable {
             Account persistentAccount = em.find(Account.class, account.getAccountid());
             List<Accountactivate> accountactivateListOld = persistentAccount.getAccountactivateList();
             List<Accountactivate> accountactivateListNew = account.getAccountactivateList();
-            List<Passwordreset> passwordresetListOld = persistentAccount.getPasswordresetList();
-            List<Passwordreset> passwordresetListNew = account.getPasswordresetList();
-            List<Review> reviewListOld = persistentAccount.getReviewList();
-            List<Review> reviewListNew = account.getReviewList();
             List<Favorite> favoriteListOld = persistentAccount.getFavoriteList();
             List<Favorite> favoriteListNew = account.getFavoriteList();
             List<Cart> cartListOld = persistentAccount.getCartList();
             List<Cart> cartListNew = account.getCartList();
             List<History> historyListOld = persistentAccount.getHistoryList();
             List<History> historyListNew = account.getHistoryList();
-            List<Registeremail> registeremailListOld = persistentAccount.getRegisteremailList();
-            List<Registeremail> registeremailListNew = account.getRegisteremailList();
             List<String> illegalOrphanMessages = null;
-            for (Passwordreset passwordresetListOldPasswordreset : passwordresetListOld) {
-                if (!passwordresetListNew.contains(passwordresetListOldPasswordreset)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Passwordreset " + passwordresetListOldPasswordreset + " since its accountid field is not nullable.");
-                }
-            }
-            for (Review reviewListOldReview : reviewListOld) {
-                if (!reviewListNew.contains(reviewListOldReview)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Review " + reviewListOldReview + " since its accountid field is not nullable.");
-                }
-            }
             for (Favorite favoriteListOldFavorite : favoriteListOld) {
                 if (!favoriteListNew.contains(favoriteListOldFavorite)) {
                     if (illegalOrphanMessages == null) {
@@ -252,14 +173,6 @@ public class AccountJpaController implements Serializable {
                     illegalOrphanMessages.add("You must retain History " + historyListOldHistory + " since its accountid field is not nullable.");
                 }
             }
-            for (Registeremail registeremailListOldRegisteremail : registeremailListOld) {
-                if (!registeremailListNew.contains(registeremailListOldRegisteremail)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Registeremail " + registeremailListOldRegisteremail + " since its accountid field is not nullable.");
-                }
-            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
@@ -270,20 +183,6 @@ public class AccountJpaController implements Serializable {
             }
             accountactivateListNew = attachedAccountactivateListNew;
             account.setAccountactivateList(accountactivateListNew);
-            List<Passwordreset> attachedPasswordresetListNew = new ArrayList<Passwordreset>();
-            for (Passwordreset passwordresetListNewPasswordresetToAttach : passwordresetListNew) {
-                passwordresetListNewPasswordresetToAttach = em.getReference(passwordresetListNewPasswordresetToAttach.getClass(), passwordresetListNewPasswordresetToAttach.getResetid());
-                attachedPasswordresetListNew.add(passwordresetListNewPasswordresetToAttach);
-            }
-            passwordresetListNew = attachedPasswordresetListNew;
-            account.setPasswordresetList(passwordresetListNew);
-            List<Review> attachedReviewListNew = new ArrayList<Review>();
-            for (Review reviewListNewReviewToAttach : reviewListNew) {
-                reviewListNewReviewToAttach = em.getReference(reviewListNewReviewToAttach.getClass(), reviewListNewReviewToAttach.getReviewid());
-                attachedReviewListNew.add(reviewListNewReviewToAttach);
-            }
-            reviewListNew = attachedReviewListNew;
-            account.setReviewList(reviewListNew);
             List<Favorite> attachedFavoriteListNew = new ArrayList<Favorite>();
             for (Favorite favoriteListNewFavoriteToAttach : favoriteListNew) {
                 favoriteListNewFavoriteToAttach = em.getReference(favoriteListNewFavoriteToAttach.getClass(), favoriteListNewFavoriteToAttach.getFavoriteid());
@@ -305,13 +204,6 @@ public class AccountJpaController implements Serializable {
             }
             historyListNew = attachedHistoryListNew;
             account.setHistoryList(historyListNew);
-            List<Registeremail> attachedRegisteremailListNew = new ArrayList<Registeremail>();
-            for (Registeremail registeremailListNewRegisteremailToAttach : registeremailListNew) {
-                registeremailListNewRegisteremailToAttach = em.getReference(registeremailListNewRegisteremailToAttach.getClass(), registeremailListNewRegisteremailToAttach.getRegisterid());
-                attachedRegisteremailListNew.add(registeremailListNewRegisteremailToAttach);
-            }
-            registeremailListNew = attachedRegisteremailListNew;
-            account.setRegisteremailList(registeremailListNew);
             account = em.merge(account);
             for (Accountactivate accountactivateListOldAccountactivate : accountactivateListOld) {
                 if (!accountactivateListNew.contains(accountactivateListOldAccountactivate)) {
@@ -327,28 +219,6 @@ public class AccountJpaController implements Serializable {
                     if (oldAccountidOfAccountactivateListNewAccountactivate != null && !oldAccountidOfAccountactivateListNewAccountactivate.equals(account)) {
                         oldAccountidOfAccountactivateListNewAccountactivate.getAccountactivateList().remove(accountactivateListNewAccountactivate);
                         oldAccountidOfAccountactivateListNewAccountactivate = em.merge(oldAccountidOfAccountactivateListNewAccountactivate);
-                    }
-                }
-            }
-            for (Passwordreset passwordresetListNewPasswordreset : passwordresetListNew) {
-                if (!passwordresetListOld.contains(passwordresetListNewPasswordreset)) {
-                    Account oldAccountidOfPasswordresetListNewPasswordreset = passwordresetListNewPasswordreset.getAccountid();
-                    passwordresetListNewPasswordreset.setAccountid(account);
-                    passwordresetListNewPasswordreset = em.merge(passwordresetListNewPasswordreset);
-                    if (oldAccountidOfPasswordresetListNewPasswordreset != null && !oldAccountidOfPasswordresetListNewPasswordreset.equals(account)) {
-                        oldAccountidOfPasswordresetListNewPasswordreset.getPasswordresetList().remove(passwordresetListNewPasswordreset);
-                        oldAccountidOfPasswordresetListNewPasswordreset = em.merge(oldAccountidOfPasswordresetListNewPasswordreset);
-                    }
-                }
-            }
-            for (Review reviewListNewReview : reviewListNew) {
-                if (!reviewListOld.contains(reviewListNewReview)) {
-                    Account oldAccountidOfReviewListNewReview = reviewListNewReview.getAccountid();
-                    reviewListNewReview.setAccountid(account);
-                    reviewListNewReview = em.merge(reviewListNewReview);
-                    if (oldAccountidOfReviewListNewReview != null && !oldAccountidOfReviewListNewReview.equals(account)) {
-                        oldAccountidOfReviewListNewReview.getReviewList().remove(reviewListNewReview);
-                        oldAccountidOfReviewListNewReview = em.merge(oldAccountidOfReviewListNewReview);
                     }
                 }
             }
@@ -382,17 +252,6 @@ public class AccountJpaController implements Serializable {
                     if (oldAccountidOfHistoryListNewHistory != null && !oldAccountidOfHistoryListNewHistory.equals(account)) {
                         oldAccountidOfHistoryListNewHistory.getHistoryList().remove(historyListNewHistory);
                         oldAccountidOfHistoryListNewHistory = em.merge(oldAccountidOfHistoryListNewHistory);
-                    }
-                }
-            }
-            for (Registeremail registeremailListNewRegisteremail : registeremailListNew) {
-                if (!registeremailListOld.contains(registeremailListNewRegisteremail)) {
-                    Account oldAccountidOfRegisteremailListNewRegisteremail = registeremailListNewRegisteremail.getAccountid();
-                    registeremailListNewRegisteremail.setAccountid(account);
-                    registeremailListNewRegisteremail = em.merge(registeremailListNewRegisteremail);
-                    if (oldAccountidOfRegisteremailListNewRegisteremail != null && !oldAccountidOfRegisteremailListNewRegisteremail.equals(account)) {
-                        oldAccountidOfRegisteremailListNewRegisteremail.getRegisteremailList().remove(registeremailListNewRegisteremail);
-                        oldAccountidOfRegisteremailListNewRegisteremail = em.merge(oldAccountidOfRegisteremailListNewRegisteremail);
                     }
                 }
             }
@@ -431,20 +290,6 @@ public class AccountJpaController implements Serializable {
                 throw new NonexistentEntityException("The account with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<Passwordreset> passwordresetListOrphanCheck = account.getPasswordresetList();
-            for (Passwordreset passwordresetListOrphanCheckPasswordreset : passwordresetListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Account (" + account + ") cannot be destroyed since the Passwordreset " + passwordresetListOrphanCheckPasswordreset + " in its passwordresetList field has a non-nullable accountid field.");
-            }
-            List<Review> reviewListOrphanCheck = account.getReviewList();
-            for (Review reviewListOrphanCheckReview : reviewListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Account (" + account + ") cannot be destroyed since the Review " + reviewListOrphanCheckReview + " in its reviewList field has a non-nullable accountid field.");
-            }
             List<Favorite> favoriteListOrphanCheck = account.getFavoriteList();
             for (Favorite favoriteListOrphanCheckFavorite : favoriteListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
@@ -465,13 +310,6 @@ public class AccountJpaController implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Account (" + account + ") cannot be destroyed since the History " + historyListOrphanCheckHistory + " in its historyList field has a non-nullable accountid field.");
-            }
-            List<Registeremail> registeremailListOrphanCheck = account.getRegisteremailList();
-            for (Registeremail registeremailListOrphanCheckRegisteremail : registeremailListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Account (" + account + ") cannot be destroyed since the Registeremail " + registeremailListOrphanCheckRegisteremail + " in its registeremailList field has a non-nullable accountid field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
@@ -529,8 +367,8 @@ public class AccountJpaController implements Serializable {
             em.close();
         }
     }
-
-    public Account findAccountByUserName(String username) {
+    
+     public Account findAccountByUserName(String username) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Account.findByUsername");
         query.setParameter("username", username);
@@ -581,5 +419,5 @@ public class AccountJpaController implements Serializable {
             em.close();
         }
     }
-
+    
 }

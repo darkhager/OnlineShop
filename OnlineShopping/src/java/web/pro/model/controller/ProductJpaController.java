@@ -10,13 +10,12 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import web.pro.model.Review;
+import web.pro.model.Favorite;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
-import web.pro.model.Favorite;
 import web.pro.model.Cart;
 import web.pro.model.History;
 import web.pro.model.Product;
@@ -27,7 +26,7 @@ import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 public class ProductJpaController implements Serializable {
 
@@ -43,9 +42,6 @@ public class ProductJpaController implements Serializable {
     }
 
     public void create(Product product) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (product.getReviewList() == null) {
-            product.setReviewList(new ArrayList<Review>());
-        }
         if (product.getFavoriteList() == null) {
             product.setFavoriteList(new ArrayList<Favorite>());
         }
@@ -59,12 +55,6 @@ public class ProductJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            List<Review> attachedReviewList = new ArrayList<Review>();
-            for (Review reviewListReviewToAttach : product.getReviewList()) {
-                reviewListReviewToAttach = em.getReference(reviewListReviewToAttach.getClass(), reviewListReviewToAttach.getReviewid());
-                attachedReviewList.add(reviewListReviewToAttach);
-            }
-            product.setReviewList(attachedReviewList);
             List<Favorite> attachedFavoriteList = new ArrayList<Favorite>();
             for (Favorite favoriteListFavoriteToAttach : product.getFavoriteList()) {
                 favoriteListFavoriteToAttach = em.getReference(favoriteListFavoriteToAttach.getClass(), favoriteListFavoriteToAttach.getFavoriteid());
@@ -84,15 +74,6 @@ public class ProductJpaController implements Serializable {
             }
             product.setHistoryList(attachedHistoryList);
             em.persist(product);
-            for (Review reviewListReview : product.getReviewList()) {
-                Product oldProductidOfReviewListReview = reviewListReview.getProductid();
-                reviewListReview.setProductid(product);
-                reviewListReview = em.merge(reviewListReview);
-                if (oldProductidOfReviewListReview != null) {
-                    oldProductidOfReviewListReview.getReviewList().remove(reviewListReview);
-                    oldProductidOfReviewListReview = em.merge(oldProductidOfReviewListReview);
-                }
-            }
             for (Favorite favoriteListFavorite : product.getFavoriteList()) {
                 Product oldProductidOfFavoriteListFavorite = favoriteListFavorite.getProductid();
                 favoriteListFavorite.setProductid(product);
@@ -144,8 +125,6 @@ public class ProductJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             Product persistentProduct = em.find(Product.class, product.getProductid());
-            List<Review> reviewListOld = persistentProduct.getReviewList();
-            List<Review> reviewListNew = product.getReviewList();
             List<Favorite> favoriteListOld = persistentProduct.getFavoriteList();
             List<Favorite> favoriteListNew = product.getFavoriteList();
             List<Cart> cartListOld = persistentProduct.getCartList();
@@ -153,14 +132,6 @@ public class ProductJpaController implements Serializable {
             List<History> historyListOld = persistentProduct.getHistoryList();
             List<History> historyListNew = product.getHistoryList();
             List<String> illegalOrphanMessages = null;
-            for (Review reviewListOldReview : reviewListOld) {
-                if (!reviewListNew.contains(reviewListOldReview)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Review " + reviewListOldReview + " since its productid field is not nullable.");
-                }
-            }
             for (Favorite favoriteListOldFavorite : favoriteListOld) {
                 if (!favoriteListNew.contains(favoriteListOldFavorite)) {
                     if (illegalOrphanMessages == null) {
@@ -188,13 +159,6 @@ public class ProductJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<Review> attachedReviewListNew = new ArrayList<Review>();
-            for (Review reviewListNewReviewToAttach : reviewListNew) {
-                reviewListNewReviewToAttach = em.getReference(reviewListNewReviewToAttach.getClass(), reviewListNewReviewToAttach.getReviewid());
-                attachedReviewListNew.add(reviewListNewReviewToAttach);
-            }
-            reviewListNew = attachedReviewListNew;
-            product.setReviewList(reviewListNew);
             List<Favorite> attachedFavoriteListNew = new ArrayList<Favorite>();
             for (Favorite favoriteListNewFavoriteToAttach : favoriteListNew) {
                 favoriteListNewFavoriteToAttach = em.getReference(favoriteListNewFavoriteToAttach.getClass(), favoriteListNewFavoriteToAttach.getFavoriteid());
@@ -217,17 +181,6 @@ public class ProductJpaController implements Serializable {
             historyListNew = attachedHistoryListNew;
             product.setHistoryList(historyListNew);
             product = em.merge(product);
-            for (Review reviewListNewReview : reviewListNew) {
-                if (!reviewListOld.contains(reviewListNewReview)) {
-                    Product oldProductidOfReviewListNewReview = reviewListNewReview.getProductid();
-                    reviewListNewReview.setProductid(product);
-                    reviewListNewReview = em.merge(reviewListNewReview);
-                    if (oldProductidOfReviewListNewReview != null && !oldProductidOfReviewListNewReview.equals(product)) {
-                        oldProductidOfReviewListNewReview.getReviewList().remove(reviewListNewReview);
-                        oldProductidOfReviewListNewReview = em.merge(oldProductidOfReviewListNewReview);
-                    }
-                }
-            }
             for (Favorite favoriteListNewFavorite : favoriteListNew) {
                 if (!favoriteListOld.contains(favoriteListNewFavorite)) {
                     Product oldProductidOfFavoriteListNewFavorite = favoriteListNewFavorite.getProductid();
@@ -296,13 +249,6 @@ public class ProductJpaController implements Serializable {
                 throw new NonexistentEntityException("The product with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<Review> reviewListOrphanCheck = product.getReviewList();
-            for (Review reviewListOrphanCheckReview : reviewListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Product (" + product + ") cannot be destroyed since the Review " + reviewListOrphanCheckReview + " in its reviewList field has a non-nullable productid field.");
-            }
             List<Favorite> favoriteListOrphanCheck = product.getFavoriteList();
             for (Favorite favoriteListOrphanCheckFavorite : favoriteListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
