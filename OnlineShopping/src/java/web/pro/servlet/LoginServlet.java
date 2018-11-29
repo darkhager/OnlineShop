@@ -48,21 +48,21 @@ public class LoginServlet extends HttpServlet {
                     if (account1 != null) {
                         if (account1.getPassword().equals(password)) {
                             session.setAttribute("account", account1);
-                            getServletContext().getRequestDispatcher("/ShopPage").forward(request, response);
+                            getServletContext().getRequestDispatcher("/ProductPage").forward(request, response);
                             return;
                         }
                     }
                     if (account2 != null) {
                         if (account2.getPassword().equals(password)) {
                             session.setAttribute("account", account2);
-                            getServletContext().getRequestDispatcher("/ShopPage").forward(request, response);
+                            getServletContext().getRequestDispatcher("/ProductPage").forward(request, response);
                             return;
                         }
                     }
                     if (account3 != null) {
                         if (account3.getPassword().equals(password)) {
                             session.setAttribute("account", account3);
-                            getServletContext().getRequestDispatcher("/ShopPage").forward(request, response);
+                            getServletContext().getRequestDispatcher("/ProductPage").forward(request, response);
                             return;
                         }
                     }
