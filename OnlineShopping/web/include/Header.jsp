@@ -37,7 +37,7 @@
                                 ${sessionScope.account.username}'s Account
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="Account">My Account</a>
+                                <a class="dropdown-item" href="EditAccount">My Account</a>
                                 <a class="dropdown-item" href="Favorite">Favorite</a>
                                 <a class="dropdown-item" href="History">History</a>
                                 <div class="dropdown-divider"></div>
