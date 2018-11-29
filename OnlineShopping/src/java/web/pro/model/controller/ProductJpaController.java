@@ -321,7 +321,7 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-
+    
     public List<Product> findProductBySearch(String search) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Product.search");
@@ -419,5 +419,5 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-
+    
 }

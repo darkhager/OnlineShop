@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <nav class="navbar navbar-expand-lg navbar-dark bg-gradient fixed-top headerfont">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="MainPage.jsp">
             <img src="images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
             Hedgehog Headphone
         </a>

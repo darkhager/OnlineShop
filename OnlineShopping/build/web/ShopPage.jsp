@@ -27,7 +27,11 @@
 
                 <div class="col-lg-9">
                     <div class="navbar navbar-light my-lg-4">
-                        <a class="navbar-brand">All Headphone</a>
+                        <a class="navbar-brand">All Headphone
+                            <c:if test="${result != null && result.length() > 0}">
+                                (${result})
+                            </c:if>
+                        </a>
                         <form action="Search" method="post" class="form-inline">
                             <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">
                             <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>

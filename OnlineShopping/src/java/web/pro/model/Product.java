@@ -217,5 +217,5 @@ public class Product implements Serializable {
     public String toString() {
         return "web.pro.controller.Product[ productid=" + productid + " ]";
     }
-
+    
 }
