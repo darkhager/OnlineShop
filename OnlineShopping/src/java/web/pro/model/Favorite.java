@@ -96,7 +96,7 @@ public class Favorite implements Serializable {
 
     @Override
     public String toString() {
-        return "web.pro.controller.Favorite[ favoriteid=" + favoriteid + " ]";
+        return "web.pro.model.Favorite[ favoriteid=" + favoriteid + " ]";
     }
     
 }

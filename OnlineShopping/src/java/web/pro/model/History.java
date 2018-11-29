@@ -159,7 +159,7 @@ public class History implements Serializable {
 
     @Override
     public String toString() {
-        return "web.pro.controller.History[ historyid=" + historyid + " ]";
+        return "web.pro.model.History[ historyid=" + historyid + " ]";
     }
     
 }

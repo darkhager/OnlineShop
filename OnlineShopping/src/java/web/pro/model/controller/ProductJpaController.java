@@ -321,7 +321,20 @@ public class ProductJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public int getProductCount() {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            Root<Product> rt = cq.from(Product.class);
+            cq.select(em.getCriteriaBuilder().count(rt));
+            Query q = em.createQuery(cq);
+            return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+
     public List<Product> findProductBySearch(String search) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Product.search");
@@ -402,22 +415,8 @@ public class ProductJpaController implements Serializable {
             return query.getResultList();
         } catch (Exception e) {
             return null;
-        } finally {
-            em.close();
-        }
-    }
 
-    public int getProductCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Product> rt = cq.from(Product.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
         }
+
     }
-    
 }

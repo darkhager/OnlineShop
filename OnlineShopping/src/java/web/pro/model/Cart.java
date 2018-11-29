@@ -114,7 +114,7 @@ public class Cart implements Serializable {
 
     @Override
     public String toString() {
-        return "web.pro.controller.Cart[ cartid=" + cartid + " ]";
+        return "web.pro.model.Cart[ cartid=" + cartid + " ]";
     }
     
 }

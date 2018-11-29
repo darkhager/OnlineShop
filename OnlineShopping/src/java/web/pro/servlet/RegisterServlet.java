@@ -23,9 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
-import web.pro.model.Accountactivate;
 import web.pro.model.controller.AccountJpaController;
-import web.pro.model.controller.AccountactivateJpaController;
 
 /**
  *
@@ -81,13 +79,7 @@ public class RegisterServlet extends HttpServlet {
             account.setPhonenumber(phoneNumber);
             ajc.create(account);
 
-            AccountactivateJpaController aajc = new AccountactivateJpaController(utx, emf);
-            Accountactivate aa = new Accountactivate();
-            aa.setActivatecode(UUID.randomUUID().toString().replace("-", "").substring(0, 9));
-            aa.setAccountid(account);
-            aajc.create(aa);
-
-            getServletContext().getRequestDispatcher("/AccountActivate").forward(request, response);
+            getServletContext().getRequestDispatcher("/RegisterSuccess.jsp").forward(request, response);
             return;
         }
         request.setAttribute("message", "Please input your information.");

@@ -215,7 +215,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "web.pro.controller.Product[ productid=" + productid + " ]";
+        return "web.pro.model.Product[ productid=" + productid + " ]";
     }
-    
+
 }

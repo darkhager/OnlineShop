@@ -7,7 +7,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 import web.pro.model.Account;
 import web.pro.model.Product;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-28T23:11:53")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-11-29T16:51:27")
 @StaticMetamodel(History.class)
 public class History_ { 
 

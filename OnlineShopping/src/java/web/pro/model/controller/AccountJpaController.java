@@ -10,14 +10,13 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import web.pro.model.Accountactivate;
+import web.pro.model.Favorite;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
-import web.pro.model.Favorite;
 import web.pro.model.Cart;
 import web.pro.model.History;
 import web.pro.model.controller.exceptions.IllegalOrphanException;
@@ -26,7 +25,7 @@ import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 public class AccountJpaController implements Serializable {
 
@@ -42,9 +41,6 @@ public class AccountJpaController implements Serializable {
     }
 
     public void create(Account account) throws RollbackFailureException, Exception {
-        if (account.getAccountactivateList() == null) {
-            account.setAccountactivateList(new ArrayList<Accountactivate>());
-        }
         if (account.getFavoriteList() == null) {
             account.setFavoriteList(new ArrayList<Favorite>());
         }
@@ -58,12 +54,6 @@ public class AccountJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            List<Accountactivate> attachedAccountactivateList = new ArrayList<Accountactivate>();
-            for (Accountactivate accountactivateListAccountactivateToAttach : account.getAccountactivateList()) {
-                accountactivateListAccountactivateToAttach = em.getReference(accountactivateListAccountactivateToAttach.getClass(), accountactivateListAccountactivateToAttach.getActivateid());
-                attachedAccountactivateList.add(accountactivateListAccountactivateToAttach);
-            }
-            account.setAccountactivateList(attachedAccountactivateList);
             List<Favorite> attachedFavoriteList = new ArrayList<Favorite>();
             for (Favorite favoriteListFavoriteToAttach : account.getFavoriteList()) {
                 favoriteListFavoriteToAttach = em.getReference(favoriteListFavoriteToAttach.getClass(), favoriteListFavoriteToAttach.getFavoriteid());
@@ -83,15 +73,6 @@ public class AccountJpaController implements Serializable {
             }
             account.setHistoryList(attachedHistoryList);
             em.persist(account);
-            for (Accountactivate accountactivateListAccountactivate : account.getAccountactivateList()) {
-                Account oldAccountidOfAccountactivateListAccountactivate = accountactivateListAccountactivate.getAccountid();
-                accountactivateListAccountactivate.setAccountid(account);
-                accountactivateListAccountactivate = em.merge(accountactivateListAccountactivate);
-                if (oldAccountidOfAccountactivateListAccountactivate != null) {
-                    oldAccountidOfAccountactivateListAccountactivate.getAccountactivateList().remove(accountactivateListAccountactivate);
-                    oldAccountidOfAccountactivateListAccountactivate = em.merge(oldAccountidOfAccountactivateListAccountactivate);
-                }
-            }
             for (Favorite favoriteListFavorite : account.getFavoriteList()) {
                 Account oldAccountidOfFavoriteListFavorite = favoriteListFavorite.getAccountid();
                 favoriteListFavorite.setAccountid(account);
@@ -140,8 +121,6 @@ public class AccountJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             Account persistentAccount = em.find(Account.class, account.getAccountid());
-            List<Accountactivate> accountactivateListOld = persistentAccount.getAccountactivateList();
-            List<Accountactivate> accountactivateListNew = account.getAccountactivateList();
             List<Favorite> favoriteListOld = persistentAccount.getFavoriteList();
             List<Favorite> favoriteListNew = account.getFavoriteList();
             List<Cart> cartListOld = persistentAccount.getCartList();
@@ -176,13 +155,6 @@ public class AccountJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<Accountactivate> attachedAccountactivateListNew = new ArrayList<Accountactivate>();
-            for (Accountactivate accountactivateListNewAccountactivateToAttach : accountactivateListNew) {
-                accountactivateListNewAccountactivateToAttach = em.getReference(accountactivateListNewAccountactivateToAttach.getClass(), accountactivateListNewAccountactivateToAttach.getActivateid());
-                attachedAccountactivateListNew.add(accountactivateListNewAccountactivateToAttach);
-            }
-            accountactivateListNew = attachedAccountactivateListNew;
-            account.setAccountactivateList(accountactivateListNew);
             List<Favorite> attachedFavoriteListNew = new ArrayList<Favorite>();
             for (Favorite favoriteListNewFavoriteToAttach : favoriteListNew) {
                 favoriteListNewFavoriteToAttach = em.getReference(favoriteListNewFavoriteToAttach.getClass(), favoriteListNewFavoriteToAttach.getFavoriteid());
@@ -205,23 +177,6 @@ public class AccountJpaController implements Serializable {
             historyListNew = attachedHistoryListNew;
             account.setHistoryList(historyListNew);
             account = em.merge(account);
-            for (Accountactivate accountactivateListOldAccountactivate : accountactivateListOld) {
-                if (!accountactivateListNew.contains(accountactivateListOldAccountactivate)) {
-                    accountactivateListOldAccountactivate.setAccountid(null);
-                    accountactivateListOldAccountactivate = em.merge(accountactivateListOldAccountactivate);
-                }
-            }
-            for (Accountactivate accountactivateListNewAccountactivate : accountactivateListNew) {
-                if (!accountactivateListOld.contains(accountactivateListNewAccountactivate)) {
-                    Account oldAccountidOfAccountactivateListNewAccountactivate = accountactivateListNewAccountactivate.getAccountid();
-                    accountactivateListNewAccountactivate.setAccountid(account);
-                    accountactivateListNewAccountactivate = em.merge(accountactivateListNewAccountactivate);
-                    if (oldAccountidOfAccountactivateListNewAccountactivate != null && !oldAccountidOfAccountactivateListNewAccountactivate.equals(account)) {
-                        oldAccountidOfAccountactivateListNewAccountactivate.getAccountactivateList().remove(accountactivateListNewAccountactivate);
-                        oldAccountidOfAccountactivateListNewAccountactivate = em.merge(oldAccountidOfAccountactivateListNewAccountactivate);
-                    }
-                }
-            }
             for (Favorite favoriteListNewFavorite : favoriteListNew) {
                 if (!favoriteListOld.contains(favoriteListNewFavorite)) {
                     Account oldAccountidOfFavoriteListNewFavorite = favoriteListNewFavorite.getAccountid();
@@ -314,11 +269,6 @@ public class AccountJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<Accountactivate> accountactivateList = account.getAccountactivateList();
-            for (Accountactivate accountactivateListAccountactivate : accountactivateList) {
-                accountactivateListAccountactivate.setAccountid(null);
-                accountactivateListAccountactivate = em.merge(accountactivateListAccountactivate);
-            }
             em.remove(account);
             utx.commit();
         } catch (Exception ex) {
@@ -367,7 +317,7 @@ public class AccountJpaController implements Serializable {
             em.close();
         }
     }
-    
+
     public Account findAccountByUserName(String username) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Account.findByUsername");
@@ -419,5 +369,5 @@ public class AccountJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

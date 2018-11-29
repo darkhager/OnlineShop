@@ -7,13 +7,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 import web.pro.model.Cart;
 import web.pro.model.Favorite;
 import web.pro.model.History;
-import web.pro.model.Review;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2561-11-28T23:11:53")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-11-29T16:51:27")
 @StaticMetamodel(Product.class)
 public class Product_ { 
 
-    public static volatile ListAttribute<Product, Review> reviewList;
     public static volatile SingularAttribute<Product, Integer> amount;
     public static volatile SingularAttribute<Product, Integer> productid;
     public static volatile ListAttribute<Product, Favorite> favoriteList;
