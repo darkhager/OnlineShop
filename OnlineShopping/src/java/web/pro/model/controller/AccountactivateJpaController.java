@@ -21,7 +21,7 @@ import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
 public class AccountactivateJpaController implements Serializable {
 
@@ -175,7 +175,7 @@ public class AccountactivateJpaController implements Serializable {
         }
     }
     
-     public Accountactivate findAccountActivateByAccountId(Account account) {
+    public Accountactivate findAccountActivateByAccountId(Account account) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Accountactivate.findByAccountid");
         query.setParameter("accountid", account.getAccountid());

@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Product.findByBrand", query = "SELECT p FROM Product p WHERE p.brand = :brand")
     , @NamedQuery(name = "Product.findByDetail", query = "SELECT p FROM Product p WHERE p.detail = :detail")
     , @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")
+    , @NamedQuery(name = "Product.findByAmount", query = "SELECT p FROM Product p WHERE p.amount = :amount")
     , @NamedQuery(name = "Product.price1", query = "SELECT p FROM Product p WHERE p.price <= 1000")
     , @NamedQuery(name = "Product.price2", query = "SELECT p FROM Product p WHERE p.price > 1000 and p.price <= 2000")
     , @NamedQuery(name = "Product.price3", query = "SELECT p FROM Product p WHERE p.price > 2000 and p.price <= 5000")
@@ -85,8 +86,6 @@ public class Product implements Serializable {
     @NotNull
     @Column(name = "AMOUNT")
     private int amount;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid")
-    private List<Review> reviewList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid")
     private List<Favorite> favoriteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid")
@@ -168,15 +167,6 @@ public class Product implements Serializable {
     }
 
     @XmlTransient
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
-    }
-
-    @XmlTransient
     public List<Favorite> getFavoriteList() {
         return favoriteList;
     }
@@ -227,5 +217,5 @@ public class Product implements Serializable {
     public String toString() {
         return "web.pro.model.Product[ productid=" + productid + " ]";
     }
-
+    
 }

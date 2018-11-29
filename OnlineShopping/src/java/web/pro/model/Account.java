@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 60130
+ * @author lara_
  */
 @Entity
 @Table(name = "ACCOUNT")
@@ -97,17 +97,11 @@ public class Account implements Serializable {
     @OneToMany(mappedBy = "accountid")
     private List<Accountactivate> accountactivateList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
-    private List<Passwordreset> passwordresetList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
-    private List<Review> reviewList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<Favorite> favoriteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<Cart> cartList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<History> historyList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
-    private List<Registeremail> registeremailList;
 
     public Account() {
     }
@@ -217,24 +211,6 @@ public class Account implements Serializable {
     }
 
     @XmlTransient
-    public List<Passwordreset> getPasswordresetList() {
-        return passwordresetList;
-    }
-
-    public void setPasswordresetList(List<Passwordreset> passwordresetList) {
-        this.passwordresetList = passwordresetList;
-    }
-
-    @XmlTransient
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
-    }
-
-    @XmlTransient
     public List<Favorite> getFavoriteList() {
         return favoriteList;
     }
@@ -259,15 +235,6 @@ public class Account implements Serializable {
 
     public void setHistoryList(List<History> historyList) {
         this.historyList = historyList;
-    }
-
-    @XmlTransient
-    public List<Registeremail> getRegisteremailList() {
-        return registeremailList;
-    }
-
-    public void setRegisteremailList(List<Registeremail> registeremailList) {
-        this.registeremailList = registeremailList;
     }
 
     @Override
