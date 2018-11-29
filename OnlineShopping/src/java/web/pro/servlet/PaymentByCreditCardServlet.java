@@ -54,6 +54,11 @@ public class PaymentByCreditCardServlet extends HttpServlet {
                 Account account = accCtrl.findAccount(((Account) session.getAttribute("account")).getAccountid());
                 HistoryJpaController hisCtrl = new HistoryJpaController(utx, emf);
                 String order = account.getAccountid() + "00" + hisCtrl.getHistoryCount();
+                if(hisCtrl.getHistoryCount() > 9){
+                    order = account.getAccountid() + "0" + hisCtrl.getHistoryCount();
+                } else if(hisCtrl.getHistoryCount() > 99){
+                    order = account.getAccountid() + "" + hisCtrl.getHistoryCount();
+                }
 
                 session.setAttribute("totalpriceall", request.getParameter("totalpriceall"));
 
