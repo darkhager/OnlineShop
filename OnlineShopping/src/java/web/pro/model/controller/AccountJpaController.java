@@ -10,13 +10,14 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import web.pro.model.Passwordreset;
+import web.pro.model.Accountactivate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 import web.pro.model.Account;
+import web.pro.model.Passwordreset;
 import web.pro.model.Review;
 import web.pro.model.Favorite;
 import web.pro.model.Cart;
@@ -28,7 +29,7 @@ import web.pro.model.controller.exceptions.RollbackFailureException;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 public class AccountJpaController implements Serializable {
 
@@ -44,6 +45,9 @@ public class AccountJpaController implements Serializable {
     }
 
     public void create(Account account) throws RollbackFailureException, Exception {
+        if (account.getAccountactivateList() == null) {
+            account.setAccountactivateList(new ArrayList<Accountactivate>());
+        }
         if (account.getPasswordresetList() == null) {
             account.setPasswordresetList(new ArrayList<Passwordreset>());
         }
@@ -66,6 +70,12 @@ public class AccountJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
+            List<Accountactivate> attachedAccountactivateList = new ArrayList<Accountactivate>();
+            for (Accountactivate accountactivateListAccountactivateToAttach : account.getAccountactivateList()) {
+                accountactivateListAccountactivateToAttach = em.getReference(accountactivateListAccountactivateToAttach.getClass(), accountactivateListAccountactivateToAttach.getActivateid());
+                attachedAccountactivateList.add(accountactivateListAccountactivateToAttach);
+            }
+            account.setAccountactivateList(attachedAccountactivateList);
             List<Passwordreset> attachedPasswordresetList = new ArrayList<Passwordreset>();
             for (Passwordreset passwordresetListPasswordresetToAttach : account.getPasswordresetList()) {
                 passwordresetListPasswordresetToAttach = em.getReference(passwordresetListPasswordresetToAttach.getClass(), passwordresetListPasswordresetToAttach.getResetid());
@@ -103,6 +113,15 @@ public class AccountJpaController implements Serializable {
             }
             account.setRegisteremailList(attachedRegisteremailList);
             em.persist(account);
+            for (Accountactivate accountactivateListAccountactivate : account.getAccountactivateList()) {
+                Account oldAccountidOfAccountactivateListAccountactivate = accountactivateListAccountactivate.getAccountid();
+                accountactivateListAccountactivate.setAccountid(account);
+                accountactivateListAccountactivate = em.merge(accountactivateListAccountactivate);
+                if (oldAccountidOfAccountactivateListAccountactivate != null) {
+                    oldAccountidOfAccountactivateListAccountactivate.getAccountactivateList().remove(accountactivateListAccountactivate);
+                    oldAccountidOfAccountactivateListAccountactivate = em.merge(oldAccountidOfAccountactivateListAccountactivate);
+                }
+            }
             for (Passwordreset passwordresetListPasswordreset : account.getPasswordresetList()) {
                 Account oldAccountidOfPasswordresetListPasswordreset = passwordresetListPasswordreset.getAccountid();
                 passwordresetListPasswordreset.setAccountid(account);
@@ -178,6 +197,8 @@ public class AccountJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             Account persistentAccount = em.find(Account.class, account.getAccountid());
+            List<Accountactivate> accountactivateListOld = persistentAccount.getAccountactivateList();
+            List<Accountactivate> accountactivateListNew = account.getAccountactivateList();
             List<Passwordreset> passwordresetListOld = persistentAccount.getPasswordresetList();
             List<Passwordreset> passwordresetListNew = account.getPasswordresetList();
             List<Review> reviewListOld = persistentAccount.getReviewList();
@@ -242,6 +263,13 @@ public class AccountJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            List<Accountactivate> attachedAccountactivateListNew = new ArrayList<Accountactivate>();
+            for (Accountactivate accountactivateListNewAccountactivateToAttach : accountactivateListNew) {
+                accountactivateListNewAccountactivateToAttach = em.getReference(accountactivateListNewAccountactivateToAttach.getClass(), accountactivateListNewAccountactivateToAttach.getActivateid());
+                attachedAccountactivateListNew.add(accountactivateListNewAccountactivateToAttach);
+            }
+            accountactivateListNew = attachedAccountactivateListNew;
+            account.setAccountactivateList(accountactivateListNew);
             List<Passwordreset> attachedPasswordresetListNew = new ArrayList<Passwordreset>();
             for (Passwordreset passwordresetListNewPasswordresetToAttach : passwordresetListNew) {
                 passwordresetListNewPasswordresetToAttach = em.getReference(passwordresetListNewPasswordresetToAttach.getClass(), passwordresetListNewPasswordresetToAttach.getResetid());
@@ -285,6 +313,23 @@ public class AccountJpaController implements Serializable {
             registeremailListNew = attachedRegisteremailListNew;
             account.setRegisteremailList(registeremailListNew);
             account = em.merge(account);
+            for (Accountactivate accountactivateListOldAccountactivate : accountactivateListOld) {
+                if (!accountactivateListNew.contains(accountactivateListOldAccountactivate)) {
+                    accountactivateListOldAccountactivate.setAccountid(null);
+                    accountactivateListOldAccountactivate = em.merge(accountactivateListOldAccountactivate);
+                }
+            }
+            for (Accountactivate accountactivateListNewAccountactivate : accountactivateListNew) {
+                if (!accountactivateListOld.contains(accountactivateListNewAccountactivate)) {
+                    Account oldAccountidOfAccountactivateListNewAccountactivate = accountactivateListNewAccountactivate.getAccountid();
+                    accountactivateListNewAccountactivate.setAccountid(account);
+                    accountactivateListNewAccountactivate = em.merge(accountactivateListNewAccountactivate);
+                    if (oldAccountidOfAccountactivateListNewAccountactivate != null && !oldAccountidOfAccountactivateListNewAccountactivate.equals(account)) {
+                        oldAccountidOfAccountactivateListNewAccountactivate.getAccountactivateList().remove(accountactivateListNewAccountactivate);
+                        oldAccountidOfAccountactivateListNewAccountactivate = em.merge(oldAccountidOfAccountactivateListNewAccountactivate);
+                    }
+                }
+            }
             for (Passwordreset passwordresetListNewPasswordreset : passwordresetListNew) {
                 if (!passwordresetListOld.contains(passwordresetListNewPasswordreset)) {
                     Account oldAccountidOfPasswordresetListNewPasswordreset = passwordresetListNewPasswordreset.getAccountid();
@@ -431,6 +476,11 @@ public class AccountJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            List<Accountactivate> accountactivateList = account.getAccountactivateList();
+            for (Accountactivate accountactivateListAccountactivate : accountactivateList) {
+                accountactivateListAccountactivate.setAccountid(null);
+                accountactivateListAccountactivate = em.merge(accountactivateListAccountactivate);
+            }
             em.remove(account);
             utx.commit();
         } catch (Exception ex) {
@@ -479,8 +529,8 @@ public class AccountJpaController implements Serializable {
             em.close();
         }
     }
-    
-     public Account findAccountByUserName(String username) {
+
+    public Account findAccountByUserName(String username) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Account.findByUsername");
         query.setParameter("username", username);
@@ -531,5 +581,5 @@ public class AccountJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

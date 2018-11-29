@@ -6,6 +6,7 @@
 package web.pro.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -18,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author lara_
+ * @author 60130
  */
 @Entity
 @Table(name = "ACCOUNT")
@@ -40,11 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Account.findByLastname", query = "SELECT a FROM Account a WHERE a.lastname = :lastname")
     , @NamedQuery(name = "Account.findByAddress", query = "SELECT a FROM Account a WHERE a.address = :address")
     , @NamedQuery(name = "Account.findByPostcode", query = "SELECT a FROM Account a WHERE a.postcode = :postcode")
-    , @NamedQuery(name = "Account.findByPhonenumber", query = "SELECT a FROM Account a WHERE a.phonenumber = :phonenumber")})
+    , @NamedQuery(name = "Account.findByPhonenumber", query = "SELECT a FROM Account a WHERE a.phonenumber = :phonenumber")
+    , @NamedQuery(name = "Account.findByActivatedate", query = "SELECT a FROM Account a WHERE a.activatedate = :activatedate")})
 public class Account implements Serializable {
-
-    @OneToMany(mappedBy = "accountid")
-    private List<Accountactivate> accountactivateList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -90,6 +91,11 @@ public class Account implements Serializable {
     @Size(min = 1, max = 13)
     @Column(name = "PHONENUMBER")
     private String phonenumber;
+    @Column(name = "ACTIVATEDATE")
+    @Temporal(TemporalType.DATE)
+    private Date activatedate;
+    @OneToMany(mappedBy = "accountid")
+    private List<Accountactivate> accountactivateList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
     private List<Passwordreset> passwordresetList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountid")
@@ -193,6 +199,23 @@ public class Account implements Serializable {
         this.phonenumber = phonenumber;
     }
 
+    public Date getActivatedate() {
+        return activatedate;
+    }
+
+    public void setActivatedate(Date activatedate) {
+        this.activatedate = activatedate;
+    }
+
+    @XmlTransient
+    public List<Accountactivate> getAccountactivateList() {
+        return accountactivateList;
+    }
+
+    public void setAccountactivateList(List<Accountactivate> accountactivateList) {
+        this.accountactivateList = accountactivateList;
+    }
+
     @XmlTransient
     public List<Passwordreset> getPasswordresetList() {
         return passwordresetList;
@@ -270,15 +293,6 @@ public class Account implements Serializable {
     @Override
     public String toString() {
         return "web.pro.model.Account[ accountid=" + accountid + " ]";
-    }
-
-    @XmlTransient
-    public List<Accountactivate> getAccountactivateList() {
-        return accountactivateList;
-    }
-
-    public void setAccountactivateList(List<Accountactivate> accountactivateList) {
-        this.accountactivateList = accountactivateList;
     }
     
 }

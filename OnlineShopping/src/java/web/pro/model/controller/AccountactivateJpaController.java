@@ -165,8 +165,17 @@ public class AccountactivateJpaController implements Serializable {
             em.close();
         }
     }
+
+    public Accountactivate findAccountactivate(Integer id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Accountactivate.class, id);
+        } finally {
+            em.close();
+        }
+    }
     
-    public Accountactivate findAccountActivateByAccountId(Account account) {
+     public Accountactivate findAccountActivateByAccountId(Account account) {
         EntityManager em = getEntityManager();
         Query query = em.createNamedQuery("Accountactivate.findByAccountid");
         query.setParameter("accountid", account.getAccountid());
@@ -174,15 +183,6 @@ public class AccountactivateJpaController implements Serializable {
             return (Accountactivate) query.getSingleResult();
         } catch (Exception e) {
             return null;
-        } finally {
-            em.close();
-        }
-    }
-
-    public Accountactivate findAccountactivate(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Accountactivate.class, id);
         } finally {
             em.close();
         }

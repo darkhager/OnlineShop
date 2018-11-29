@@ -30,7 +30,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Accountactivate.findAll", query = "SELECT a FROM Accountactivate a")
     , @NamedQuery(name = "Accountactivate.findByActivateid", query = "SELECT a FROM Accountactivate a WHERE a.activateid = :activateid")
-    , @NamedQuery(name = "Accountactivate.findByAccountid", query = "SELECT a FROM Accountactivate a WHERE a.accountid = :accountid")
     , @NamedQuery(name = "Accountactivate.findByActivatecode", query = "SELECT a FROM Accountactivate a WHERE a.activatecode = :activatecode")})
 public class Accountactivate implements Serializable {
 
@@ -102,5 +101,5 @@ public class Accountactivate implements Serializable {
     public String toString() {
         return "web.pro.model.Accountactivate[ activateid=" + activateid + " ]";
     }
-
+    
 }
